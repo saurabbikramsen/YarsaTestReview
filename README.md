@@ -35,7 +35,7 @@
 - Run the app locally using pnpm start:dev as below for development mode.
 
 - After running locally 'http://localhost:[port]/api' is the route for swagger documentation.
-- Run e2e test which will seed the first admin user:
+- Run e2e test which will seed(create) the first admin user:
     - email : saurab@gmail.com
     - password : saurab123
 - Create players and play games to increase their stats.
@@ -43,6 +43,8 @@
 - View leaderboard to see top 5 players.
 - For socket APIs documentation 'http://localhost:[port]/async-api' is the provided route.
 - For socket client reference there is 3 clients present in the clients folder.
+- Use socket documentation for chat system implementation.
+
 
 ## Installation
 

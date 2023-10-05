@@ -178,7 +178,6 @@ export class PlayerService {
   }
 
   async updatePlayer(id: string, playerDetails: PlayerUpdateDto) {
-    console.log('inside update player service:', id);
     const player = await this.prisma.player.findFirst({ where: { id } });
     if (!player) {
       throw new NotFoundException('player not found');

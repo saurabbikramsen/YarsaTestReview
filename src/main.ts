@@ -14,6 +14,9 @@ const docRelPath = '/async-api';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors();
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
   const config = new DocumentBuilder()
     .setTitle('YarsaPlay')
     .setDescription('review project')
@@ -23,8 +26,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  app.enableCors();
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const asyncApiServer: AsyncServerObject = {
     url: 'ws://localhost:8080',

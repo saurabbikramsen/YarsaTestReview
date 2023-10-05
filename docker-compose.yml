@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  redis:
+    container_name: redis_cache
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+
+  postgres:
+    container_name: postgres
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=yarsatest
+      - POSTGRES_PASSWORD=yarsatest123
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+volumes:
+  redis:
+    driver: local
+  postgres:
+    driver: local

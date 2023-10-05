@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name        String
+  email       String  @unique
+  password    String
+  role        String
+  refresh_key String?
+}
+
+model Player {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name     String
+  email    String  @unique
+  password String
+  role     String  @default("player")
+  active   Boolean @default(true)
+
+  statistics  Statistics @relation(fields: [stats_id], references: [id])
+  stats_id    String     @unique
+  refresh_key String?
+  Rooms       Rooms[]
+}
+
+model Statistics {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  experience_point Int
+  coins            Int     @default(0)
+  games_played     Int
+  games_won        Int
+  Player           Player?
+}
+
+model Chats {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  sender_id   String
+  receiver_id String
+  message     String
+  Rooms       Rooms?  @relation(fields: [roomsId], references: [id])
+  roomsId     String?
+}
+
+model Rooms {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name    String   @unique
+  players Player[]
+  chats   Chats[]
+}

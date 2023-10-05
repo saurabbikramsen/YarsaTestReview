@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
 
 export class ChatDto {
   @ApiProperty({ description: 'Id of the receiver' })
@@ -27,24 +26,7 @@ export class BroadcastAllDto {
   })
   message: string;
 }
-export class ChatRoomDto {
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  roomName: string;
-}
 
-export class PersonalChatsDto {
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  senderId: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  receiverId: string;
-}
 export class PersonalChatsResponseDto {
   @ApiProperty()
   id: string;

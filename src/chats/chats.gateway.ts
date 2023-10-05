@@ -241,7 +241,7 @@ export class ChatsGateway {
   async getRoomChats(roomName: string) {
     return this.prisma.rooms.findUnique({
       where: { name: roomName },
-      select: { chats: true, players: true },
+      select: { name: true, chats: true, players: true },
     });
   }
 

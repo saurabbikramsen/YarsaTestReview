@@ -3,11 +3,11 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as process from 'process';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-// import {
-//   AsyncApiDocumentBuilder,
-//   AsyncApiModule,
-//   AsyncServerObject,
-// } from 'nestjs-asyncapi';
+import {
+  AsyncApiDocumentBuilder,
+  AsyncApiModule,
+  AsyncServerObject,
+} from 'nestjs-asyncapi';
 
 const host = 'localhost';
 const docRelPath = '/async-api';
@@ -26,26 +26,26 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  // const asyncApiServer: AsyncServerObject = {
-  //   url: 'ws://localhost:8080',
-  //   protocol: 'socket.io',
-  //   protocolVersion: '4',
-  //   description:
-  //     'Allows you to connect using the websocket protocol to our Socket.io server.',
-  //   bindings: {},
-  // };
-  //
-  // const asyncApiOptions = new AsyncApiDocumentBuilder()
-  //   .setTitle('YarsaPlay Chat Api')
-  //   .setDescription('Socket Chats Implementation Documentation')
-  //   .setVersion('1.0')
-  //   .setDefaultContentType('application/json')
-  //   .addServer('yarsaPlay-server', asyncApiServer)
-  //   .addBearerAuth()
-  //   .build();
-  //
-  // const asyncapiDocument = AsyncApiModule.createDocument(app, asyncApiOptions);
-  // await AsyncApiModule.setup(docRelPath, app, asyncapiDocument);
+  const asyncApiServer: AsyncServerObject = {
+    url: 'ws://localhost:8080',
+    protocol: 'socket.io',
+    protocolVersion: '4',
+    description:
+      'Allows you to connect using the websocket protocol to our Socket.io server.',
+    bindings: {},
+  };
+
+  const asyncApiOptions = new AsyncApiDocumentBuilder()
+    .setTitle('YarsaPlay Chat Api')
+    .setDescription('Socket Chats Implementation Documentation')
+    .setVersion('1.0')
+    .setDefaultContentType('application/json')
+    .addServer('yarsaPlay-server', asyncApiServer)
+    .addBearerAuth()
+    .build();
+
+  const asyncapiDocument = AsyncApiModule.createDocument(app, asyncApiOptions);
+  await AsyncApiModule.setup(docRelPath, app, asyncapiDocument);
 
   return app.listen(process.env.PORT, host);
 }

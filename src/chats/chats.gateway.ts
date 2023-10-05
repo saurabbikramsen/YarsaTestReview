@@ -18,6 +18,7 @@ import { AsyncApiPub, AsyncApiSub } from 'nestjs-asyncapi';
 import {
   BroadcastAllDto,
   ChatDto,
+  ChatsDto,
   ConnectionDto,
   JoinRoomDto,
   MessageRoomDto,
@@ -57,8 +58,8 @@ export class ChatsGateway {
   async handleConnection(client: Socket) {
     try {
       const decodedToken = await this.verifyUser(client);
-      const player = await this.prisma.player.findFirst({
-        where: { email: decodedToken.email },
+      const player = await this.prisma.player.findUnique({
+        where: { id: decodedToken.id },
       });
       if (player && player.active == true) {
         client.data.user = player;
@@ -151,7 +152,6 @@ export class ChatsGateway {
       const chat = await this.prisma.chats.create({
         data: { sender_id: sender.id, message, receiver_id: roomName },
       });
-
       await this.prisma.rooms.update({
         where: { id: room.id },
         data: { chats: { connect: { id: chat.id } } },
@@ -221,5 +221,49 @@ export class ChatsGateway {
     const token = client.handshake.headers.authorization;
     const realToken = token.slice(7, token.length);
     return this.utils.decodeAccessToken(realToken);
+  }
+
+  async getPersonalChats(senderId: string, receiverId: string) {
+    const players = [senderId, receiverId];
+    return this.prisma.chats.findMany({
+      where: {
+        AND: [{ sender_id: { in: players } }, { receiver_id: { in: players } }],
+      },
+      select: {
+        sender_id: true,
+        message: true,
+        id: true,
+        created_at: true,
+        receiver_id: true,
+      },
+    });
+  }
+  async getRoomChats(roomName: string) {
+    return this.prisma.rooms.findUnique({
+      where: { name: roomName },
+      select: { chats: true, players: true },
+    });
+  }
+
+  async updateChats(id: string, chatsData: ChatsDto) {
+    await this.findChat(id);
+    await this.prisma.chats.update({
+      where: { id },
+      data: { message: chatsData.message },
+    });
+    return { message: 'Chat updated successfully' };
+  }
+
+  async deleteChat(id: string) {
+    await this.findChat(id);
+    await this.prisma.chats.delete({ where: { id } });
+    return { message: 'message deleted successfully' };
+  }
+
+  async findChat(id: string) {
+    const chat = await this.prisma.chats.findUnique({ where: { id } });
+    if (!chat) {
+      throw new NotFoundException('chat not present');
+    }
   }
 }

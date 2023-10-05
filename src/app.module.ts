@@ -10,7 +10,7 @@ import { UserModule } from './user/user.module';
 import { CommonModule } from './utils/common.module';
 import { PlayerModule } from './player/player.module';
 import { SseModule } from './serverSentEvents/sse.module';
-import { EventsModule } from './chats/events.module';
+import { ChatsModule } from './chats/chats.module';
 
 @Global()
 @Module({
@@ -32,7 +32,7 @@ import { EventsModule } from './chats/events.module';
     CommonModule,
     PlayerModule,
     SseModule,
-    EventsModule,
+    ChatsModule,
   ],
 
   exports: [JwtModule],

@@ -29,7 +29,6 @@ import {
 import { UserResponseDto } from '../user/Dto/user.dto';
 import { PlayerAuthGuard } from './guard/playerAuth.guard';
 import { AdminAuthGuard } from '../user/guard/admin.auth.guard';
-import { StaffAuthGuard } from '../user/guard/staff.auth.guard';
 
 @ApiTags('player')
 @Controller('player')
@@ -58,7 +57,7 @@ export class PlayerController {
     return this.playerService.getPlayer(id);
   }
 
-  @UseGuards(StaffAuthGuard)
+  @UseGuards(PlayerAuthGuard)
   @ApiBearerAuth()
   @ApiQuery({ name: 'searchKey', required: false, type: String })
   @ApiQuery({ name: 'page', required: true, type: Number })
@@ -105,7 +104,6 @@ export class PlayerController {
   @Put('/:id')
   @ApiResponse({ type: UserResponseDto })
   updatePlayer(@Body() playerDto: PlayerUpdateDto, @Param('id') id: string) {
-    console.log('id is: ', id);
     return this.playerService.updatePlayer(id, playerDto);
   }
 
@@ -128,7 +126,6 @@ export class PlayerController {
   })
   @Delete('/:id')
   deletePlayer(@Param('id') id: string) {
-    console.log('entering delete player');
     return this.playerService.deletePlayer(id);
   }
 }

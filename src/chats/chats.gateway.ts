@@ -78,7 +78,11 @@ export class ChatsGateway {
     operationId: 'privateMessage',
     summary: 'privateMessage',
     description:
-      'it uses recipient id to send message to other connected users and returns senders id and message',
+      'it uses recipient id to send message to other connected users and returns senders id and message ' +
+      'emittedResponse = {' +
+      'message: string,  ' +
+      'senderId: string' +
+      '}',
     message: {
       payload: ChatDto,
     },
@@ -108,7 +112,11 @@ export class ChatsGateway {
     channel: 'join_room',
     summary: 'join_room',
     operationId: 'join_room',
-    description: 'it joins a user to a room using the room name',
+    description:
+      'it joins a user to a room using the room name  ' +
+      'response = {' +
+      'message: string' +
+      '}',
     message: {
       payload: JoinRoomDto,
     },
@@ -131,7 +139,10 @@ export class ChatsGateway {
     summary: 'message_room',
     operationId: 'message_room',
     description:
-      'provide room name and message to broadcast the message to all the users in the room',
+      'provide room name and message to broadcast the message to all the users in the room ' +
+      'emittedResponse = {' +
+      'message : string, sender_id : string, receiver_id: string' +
+      '}',
     message: {
       payload: MessageRoomDto,
     },
@@ -169,7 +180,11 @@ export class ChatsGateway {
     channel: 'leave_room',
     summary: 'leave_room',
     operationId: 'leave_room',
-    description: 'leave a room by providing room name',
+    description:
+      'leave a room by providing room name ' +
+      'response = {' +
+      'message : string' +
+      '}',
     message: {
       payload: JoinRoomDto,
     },
@@ -201,7 +216,11 @@ export class ChatsGateway {
     channel: 'message_all',
     summary: 'message_all',
     operationId: 'message_all',
-    description: 'used to broadcast message to all the subscribed users',
+    description:
+      'used to broadcast message to all the subscribed users ' +
+      'emittedResponse = {' +
+      'message : string, senderId: string ' +
+      '}',
     message: {
       payload: BroadcastAllDto,
     },
@@ -210,7 +229,7 @@ export class ChatsGateway {
     const { message } = data;
     const sender = client.data.user;
 
-    this.server.emit('message', { message: message, sender: sender.id });
+    this.server.emit('message', { message: message, senderId: sender.id });
   }
 
   async handleDisconnect(client: Socket) {

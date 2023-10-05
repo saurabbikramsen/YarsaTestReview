@@ -6,6 +6,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { redisStore } from 'cache-manager-redis-yet';
 import { RedisClientOptions } from 'redis';
 import { CacheModule } from '@nestjs/cache-manager';
+import { UserModule } from './user/user.module';
+import { CommonModule } from './utils/common.module';
+import { PlayerModule } from './player/player.module';
+import { SseModule } from './serverSentEvents/sse.module';
 
 @Global()
 @Module({
@@ -23,6 +27,10 @@ import { CacheModule } from '@nestjs/cache-manager';
     }),
     PrismaModule,
     JwtModule,
+    UserModule,
+    CommonModule,
+    PlayerModule,
+    SseModule,
   ],
 
   exports: [JwtModule],

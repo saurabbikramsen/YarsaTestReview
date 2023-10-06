@@ -23,7 +23,7 @@ import argon from './mocks/argonwrapper';
 const PrismaServiceMock = {
   player: {
     findMany: jest.fn().mockResolvedValue(players),
-    findFirst: jest.fn().mockResolvedValue(player),
+    findUnique: jest.fn().mockResolvedValue(player),
     update: jest.fn(),
     create: jest.fn().mockResolvedValue(player),
     delete: jest.fn(),
@@ -82,7 +82,7 @@ describe('PlayerService', () => {
       const ManySpyOn = jest.spyOn(prismaService.player, 'findMany');
       const countSpyOn = jest.spyOn(prismaService.player, 'count');
       const pageSpyOn = jest.spyOn(utils, 'paginatedResponse');
-      const getAll = await playerService.getAllPlayers('hello', 5, 5);
+      const getAll = await playerService.getAllPlayers('', 5, 5, 'np');
 
       expect(getAll).toStrictEqual(players);
       expect(ManySpyOn).toBeCalledTimes(1);
@@ -92,7 +92,7 @@ describe('PlayerService', () => {
   });
   describe('return a user or bulk of users', () => {
     it('should return a user', async () => {
-      const findSpyOn = jest.spyOn(prismaService.player, 'findFirst');
+      const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
       const getUser = await playerService.getPlayer(
         '82e0c2d5-ed5e-4baf-ab1e-4c8aa5308452',
       );
@@ -111,7 +111,7 @@ describe('PlayerService', () => {
   describe('set player inactive if active and vice versa', () => {
     it('should throw not found exception', async () => {
       const findSpyOn = jest
-        .spyOn(prismaService.player, 'findFirst')
+        .spyOn(prismaService.player, 'findUnique')
         .mockResolvedValueOnce(null);
       try {
         await playerService.setInactive('113360ab-5d52-4df6-a2d2-02139a116b15');
@@ -122,7 +122,7 @@ describe('PlayerService', () => {
       expect(findSpyOn).toBeCalledTimes(2);
     });
     it('should set player inactive if active and vice versa ', async () => {
-      const findSpyOn = jest.spyOn(prismaService.player, 'findFirst');
+      const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
       const setinactive = await playerService.setInactive(
         '113360ab-5d52-4df6-a2d2-02139a116b15',
       );
@@ -137,7 +137,7 @@ describe('PlayerService', () => {
   describe('should play game and update stats', () => {
     it('should return not found exception', async () => {
       const findSpyOn = jest
-        .spyOn(prismaService.player, 'findFirst')
+        .spyOn(prismaService.player, 'findUnique')
         .mockResolvedValueOnce(null);
       try {
         await playerService.playGame('113360ab-5d52-4df6-a2d2-02139a116b15');
@@ -148,7 +148,7 @@ describe('PlayerService', () => {
       expect(findSpyOn).toBeCalledTimes(4);
     });
     it('should update the statistics of player after playing games', async () => {
-      const findSpyOn = jest.spyOn(prismaService.player, 'findFirst');
+      const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
       playerService.playNewGame = jest.fn().mockResolvedValue(playResponse);
       const playGame = await playerService.playGame(
         '113360ab-5d52-4df6-a2d2-02139a116b15',
@@ -180,7 +180,7 @@ describe('PlayerService', () => {
   describe('Login in or Signup a player', () => {
     it('should signup a player', async () => {
       const findSpyOn = jest
-        .spyOn(prismaService.player, 'findFirst')
+        .spyOn(prismaService.player, 'findUnique')
         .mockResolvedValueOnce(null);
       argon.hash = jest.fn().mockReturnValue(hashPassword);
       const createSpyOn = jest.spyOn(prismaService.player, 'create');
@@ -193,7 +193,7 @@ describe('PlayerService', () => {
     });
 
     it('should login a player', async () => {
-      const findSpyOn = jest.spyOn(prismaService.player, 'findFirst');
+      const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
       argon.verify = jest.fn().mockReturnValueOnce(true);
       const logSignupSpyOn = jest.spyOn(utils, 'loginSignup');
       const loginPlayer = await playerService.loginSignup(signupDetails);
@@ -205,7 +205,7 @@ describe('PlayerService', () => {
   describe('should update a player', () => {
     it('should return not found exception', async () => {
       const findSpyOn = jest
-        .spyOn(prismaService.player, 'findFirst')
+        .spyOn(prismaService.player, 'findUnique')
         .mockResolvedValueOnce(null);
       try {
         await playerService.updatePlayer(player.id, {
@@ -219,7 +219,7 @@ describe('PlayerService', () => {
       expect(findSpyOn).toBeCalledTimes(8);
     });
     it('should update the player', async () => {
-      const findSpyOn = jest.spyOn(prismaService.player, 'findFirst');
+      const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
       const playerUpdateSpyOn = jest.spyOn(utils, 'updatePlayer');
       const updatePlayer = await playerService.updatePlayer(player.id, {
         ...player,
@@ -238,7 +238,7 @@ describe('PlayerService', () => {
   describe('should delete a player', () => {
     it('should return not found exception', async () => {
       const findSpyOn = jest
-        .spyOn(prismaService.player, 'findFirst')
+        .spyOn(prismaService.player, 'findUnique')
         .mockResolvedValueOnce(null);
       try {
         await playerService.deletePlayer(player.id);
@@ -249,7 +249,7 @@ describe('PlayerService', () => {
       expect(findSpyOn).toBeCalledTimes(10);
     });
     it('should delete the player', async () => {
-      const findSpyOn = jest.spyOn(prismaService.player, 'findFirst');
+      const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
       const deletePlayer = await playerService.deletePlayer(player.id);
       expect(deletePlayer).toStrictEqual({
         message: 'player deleted successfully',

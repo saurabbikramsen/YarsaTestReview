@@ -26,6 +26,7 @@ export const player = {
   name: 'saurab',
   role: 'player',
   active: true,
+  country: 'np',
   refresh_key: 'dddddd',
   statistics: statistics,
 };
@@ -35,30 +36,39 @@ export const topPlayers = [
     id: '749734251-3s61-40bc-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
     statistics: statistics,
   },
   {
     id: '74979d51-3s61-df34-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
+
     statistics: statistics,
   },
   {
     id: '74979d51-23d5-40bc-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
+
     statistics: statistics,
   },
   {
     id: '74vf3h51-3s61-40bc-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
+
     statistics: statistics,
   },
   {
     id: '71w3fd51-3s61-40bc-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
+
     statistics: statistics,
   },
 ];
@@ -68,6 +78,8 @@ export const rankedPlayers = [
     id: '749734251-3s61-40bc-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
+
     statistics: statistics,
     rank: 1,
   },
@@ -75,6 +87,8 @@ export const rankedPlayers = [
     id: '74979d51-3s61-df34-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
+
     statistics: statistics,
     rank: 2,
   },
@@ -82,6 +96,8 @@ export const rankedPlayers = [
     id: '74979d51-23d5-40bc-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
+
     statistics: statistics,
     rank: 3,
   },
@@ -89,6 +105,8 @@ export const rankedPlayers = [
     id: '74vf3h51-3s61-40bc-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
+
     statistics: statistics,
     rank: 4,
   },
@@ -96,6 +114,8 @@ export const rankedPlayers = [
     id: '71w3fd51-3s61-40bc-9a8f-73f11f910e32',
     name: 'ssv',
     role: 'player',
+    country: 'np',
+
     statistics: statistics,
     rank: 5,
   },
@@ -105,6 +125,7 @@ export const addPlayer = {
   name: 'saurab',
   email: 'saurab@gmail.com',
   password: 'saurab123',
+  country: 'np',
 };
 export const loginInput = {
   email: 'saurab@gmail.com',
@@ -115,6 +136,7 @@ export const signupDetails = {
   email: 'saurab@gmail.com',
   password: 'saurab123',
   name: 'saurab sen',
+  country: 'np',
 };
 
 export const playerLoginDetail = {
@@ -131,6 +153,8 @@ export const userLoginInfo = {
   id: player.id,
   name: 'saurab',
   role: 'player',
+  country: 'np',
+
   email: 'saurab@gmail.com',
   password:
     '$argon2id$v=19$m=65536,t=3,p=4$NLQKCPZJC1boicab/t5I6Q$7Uk3Ywjd4DCFCawLrhev2VEKGjohP+wpYFLQKZeYHyc',
@@ -163,6 +187,8 @@ export const paginatedPlayer = {
       id: '697f7f2c-11f5-4621-99b9-1b3bb650a968',
       name: 'Lisandro',
       active: true,
+      country: 'np',
+
       statistics: {
         coins: 340,
         experience_point: 1194,
@@ -174,6 +200,8 @@ export const paginatedPlayer = {
       id: '8eb07ab9-5924-4bf9-9c4f-ffe8a1f83fc5',
       name: 'Rosario',
       active: true,
+      country: 'np',
+
       statistics: {
         coins: 316,
         experience_point: 1309,
@@ -203,6 +231,8 @@ export const playerData = [
     id: '697f7f2c-11f5-4621-99b9-1b3bb650a968',
     name: 'Lisandro',
     active: true,
+    country: 'np',
+
     statistics: {
       coins: 340,
       experience_point: 1194,
@@ -214,6 +244,8 @@ export const playerData = [
     id: '8eb07ab9-5924-4bf9-9c4f-ffe8a1f83fc5',
     name: 'Rosario',
     active: true,
+    country: 'np',
+
     statistics: {
       coins: 316,
       experience_point: 1309,

@@ -30,6 +30,7 @@ async function main() {
       ...data,
       password: await argon.hash(data.name + '123'),
       country: country[Math.floor(Math.random() * country.length)],
+      active: Boolean(Math.round(Math.random())),
     };
     await prisma.player.create({
       data: { ...userData, statistics: { connect: { id: stats.id } } },

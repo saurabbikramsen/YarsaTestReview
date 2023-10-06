@@ -81,8 +81,8 @@ export class PlayerService {
         },
       });
     } else {
-      return this.prisma.player.findFirst({
-        where: { id },
+      return this.prisma.player.findUnique({
+        where: { id, active: true },
         select: {
           id: true,
           name: true,
@@ -101,9 +101,18 @@ export class PlayerService {
     }
   }
 
-  async getAllPlayers(search: string, take: number, skip: number) {
+  async getAllPlayers(
+    search: string,
+    take: number,
+    skip: number,
+    country: string,
+  ) {
     const players = await this.prisma.player.findMany({
-      where: { name: { contains: search } },
+      where: {
+        name: { contains: search, mode: 'insensitive' },
+        active: true,
+        country: { contains: country },
+      },
       skip,
       take,
       select: {
@@ -122,13 +131,17 @@ export class PlayerService {
       },
     });
     const count = await this.prisma.player.count({
-      where: { name: { contains: search } },
+      where: {
+        name: { contains: search, mode: 'insensitive' },
+        country: { contains: country },
+        active: true,
+      },
     });
     return this.utils.paginatedResponse(players, skip, take, count);
   }
 
   async setInactive(id: string) {
-    const player = await this.prisma.player.findFirst({ where: { id } });
+    const player = await this.prisma.player.findUnique({ where: { id } });
     if (!player) {
       throw new NotFoundException('no player found');
     }
@@ -144,7 +157,7 @@ export class PlayerService {
   }
 
   async playGame(id: string) {
-    const player = await this.prisma.player.findFirst({
+    const player = await this.prisma.player.findUnique({
       where: { id },
       include: { statistics: true },
     });
@@ -155,7 +168,7 @@ export class PlayerService {
   }
 
   async loginSignup(playerDetails: PlayerDto) {
-    const player = await this.prisma.player.findFirst({
+    const player = await this.prisma.player.findUnique({
       where: { email: playerDetails.email },
       select: { email: true, name: true, id: true, role: true, password: true },
     });
@@ -183,7 +196,7 @@ export class PlayerService {
   }
 
   async updatePlayer(id: string, playerDetails: PlayerUpdateDto) {
-    const player = await this.prisma.player.findFirst({ where: { id } });
+    const player = await this.prisma.player.findUnique({ where: { id } });
     if (!player) {
       throw new NotFoundException('player not found');
     }
@@ -191,7 +204,7 @@ export class PlayerService {
   }
 
   async deletePlayer(id: string) {
-    const player = await this.prisma.player.findFirst({ where: { id } });
+    const player = await this.prisma.player.findUnique({ where: { id } });
     if (!player) {
       throw new NotFoundException('player not found');
     }

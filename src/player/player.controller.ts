@@ -62,6 +62,7 @@ export class PlayerController {
   @ApiQuery({ name: 'searchKey', required: false, type: String })
   @ApiQuery({ name: 'page', required: true, type: Number })
   @ApiQuery({ name: 'pageSize', required: true, type: Number })
+  @ApiQuery({ name: 'country', required: false, type: String })
   @Get()
   @ApiResponse({ type: [PlayerGetDto] })
   @ApiOperation({
@@ -71,9 +72,10 @@ export class PlayerController {
     @Query('searchKey') searchKey = '',
     @Query('page', ParseIntPipe) page = 1,
     @Query('pageSize', ParseIntPipe) pageSize = 10,
+    @Query('country') country = '',
   ) {
     const skip = page ? (page - 1) * pageSize : 0;
-    return this.playerService.getAllPlayers(searchKey, pageSize, skip);
+    return this.playerService.getAllPlayers(searchKey, pageSize, skip, country);
   }
 
   @UseGuards(PlayerAuthGuard)

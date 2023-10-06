@@ -93,6 +93,8 @@ export class PlayerController {
   @ApiResponse({ type: UserResponseDto })
   @ApiOperation({
     summary: 'login(needed email & password only) or signup a player',
+    description:
+      '**country must be one of the following values: np, in, us, au, af**',
   })
   addPlayer(@Body() playerDto: PlayerDto) {
     return this.playerService.loginSignup(playerDto);
@@ -102,6 +104,8 @@ export class PlayerController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Update the player data with the given id',
+    description:
+      '**country must be one of the following values: np, in, us, au, af**',
   })
   @Put('/:id')
   @ApiResponse({ type: UserResponseDto })

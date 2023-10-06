@@ -19,7 +19,7 @@ export class UserService {
   constructor(private prisma: PrismaService, private utils: CommonUtils) {}
 
   async getUser(id: string) {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findUnique({
       where: { id },
       select: { id: true, name: true, email: true, role: true },
     });
@@ -30,19 +30,19 @@ export class UserService {
   }
   async getAllUsers(searchKey: string, take: number, skip: number) {
     const users = await this.prisma.user.findMany({
-      where: { name: { contains: searchKey } },
+      where: { name: { contains: searchKey, mode: 'insensitive' } },
       skip,
       take,
       select: { id: true, name: true, email: true, role: true },
     });
     const count = await this.prisma.user.count({
-      where: { name: { contains: searchKey } },
+      where: { name: { contains: searchKey, mode: 'insensitive' } },
     });
     return this.utils.paginatedResponse(users, skip, take, count);
   }
 
   async loginUser(loginDetails: UserLoginDto) {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findUnique({
       where: { email: loginDetails.email },
       select: { id: true, name: true, email: true, role: true, password: true },
     });
@@ -53,7 +53,7 @@ export class UserService {
   }
 
   async addUser(userDetails: UserDto) {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findUnique({
       where: { email: userDetails.email },
     });
     if (!user) {

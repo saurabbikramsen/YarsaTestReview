@@ -31,6 +31,7 @@ export class PlayerService {
     const players = await this.prisma.player.findMany({
       where: { active: true },
       select: {
+        id: true,
         name: true,
         active: true,
         country: true,
@@ -200,7 +201,8 @@ export class PlayerService {
     if (!player) {
       throw new NotFoundException('player not found');
     }
-    return this.utils.updatePlayer(playerDetails);
+    const playerInfo = { id: player.id, ...playerDetails };
+    return this.utils.updatePlayer(playerInfo);
   }
 
   async deletePlayer(id: string) {

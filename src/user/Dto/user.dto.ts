@@ -18,7 +18,7 @@ export class UserDto {
   @Length(6)
   password: string;
 
-  @ApiProperty({ enum: ['admin', 'user'] })
+  @ApiProperty({ enum: ['admin', 'staff'] })
   @IsEnum(UserRole)
   role: UserRole;
 }

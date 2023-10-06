@@ -116,12 +116,12 @@ export class CommonUtils {
     console.log(token_data);
 
     if (token_data.role == 'player') {
-      const player = await this.prisma.player.findFirst({
+      const player = await this.prisma.player.findUnique({
         where: { id: token_data.id },
       });
       return this.tokenGenerator(player, token_data.refresh_key);
     } else if (token_data.role == 'admin' || token_data.role == 'staff') {
-      const user = await this.prisma.user.findFirst({
+      const user = await this.prisma.user.findUnique({
         where: { id: token_data.id },
       });
       return this.tokenGenerator(user, token_data.refresh_key);

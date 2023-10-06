@@ -25,11 +25,11 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 const PrismaServiceMock = {
   player: {
-    findFirst: jest.fn().mockResolvedValue(player),
+    findUnique: jest.fn().mockResolvedValue(player),
     update: jest.fn(),
   },
   user: {
-    findFirst: jest.fn().mockResolvedValue(user),
+    findUnique: jest.fn().mockResolvedValue(user),
     update: jest.fn(),
   },
 };
@@ -106,7 +106,7 @@ describe('CommonUtils', () => {
   });
   describe('should generate new access token and refresh token', () => {
     it('should return access and refresh tokens for player', async () => {
-      const findSpyOn = jest.spyOn(prismaService.player, 'findFirst');
+      const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
       commonUtils.tokenGenerator = jest.fn().mockResolvedValue(tokens);
       const generateTokens = await commonUtils.generateTokens(
         jwtPlayerRefreshPayload,
@@ -115,7 +115,7 @@ describe('CommonUtils', () => {
       expect(findSpyOn).toBeCalledTimes(1);
     });
     it('should return access and refresh tokens for user', async () => {
-      const findUserSpyOn = jest.spyOn(prismaService.user, 'findFirst');
+      const findUserSpyOn = jest.spyOn(prismaService.user, 'findUnique');
       commonUtils.tokenGenerator = jest.fn().mockResolvedValue(tokens);
       const generateTokens = await commonUtils.generateTokens(
         jwtUserRefreshPayload,
@@ -184,7 +184,7 @@ describe('CommonUtils', () => {
   });
   describe('password tests', () => {
     it('should not match the passwords', async () => {
-      const userSpyOn = jest.spyOn(prismaService.user, 'findFirst');
+      const userSpyOn = jest.spyOn(prismaService.user, 'findUnique');
       argon.verify = jest.fn().mockReturnValue(false);
       try {
         await commonUtils.passwordMatches('saurabsen', argonPassword);

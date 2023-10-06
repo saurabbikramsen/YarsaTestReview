@@ -1,11 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   Length,
 } from 'class-validator';
+import { Country } from '../../enums/enums';
 
 export class PlayerDto {
   @ApiProperty()
@@ -18,10 +20,11 @@ export class PlayerDto {
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty()
-  @IsEmail()
-  @IsNotEmpty()
-  country: string;
+  @ApiProperty({
+    enum: ['np', 'in', 'us', 'au', 'af'],
+  })
+  @IsEnum(Country)
+  country: Country;
 
   @ApiProperty()
   @IsString()
@@ -43,11 +46,9 @@ export class PlayerUpdateDto {
   @IsOptional()
   email: string;
 
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  country: string;
+  @ApiProperty({ enum: ['np', 'in', 'us', 'au', 'af'] })
+  @IsEnum(Country)
+  country: Country;
 
   @ApiProperty()
   @IsString()

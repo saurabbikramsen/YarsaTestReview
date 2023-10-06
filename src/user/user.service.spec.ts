@@ -22,14 +22,14 @@ import argon from './mocks/argonwrapper';
 const PrismaServiceMock = {
   user: {
     findMany: jest.fn().mockResolvedValue(users),
-    findFirst: jest.fn().mockResolvedValue(user),
+    findUnique: jest.fn().mockResolvedValue(user),
     create: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
     count: jest.fn().mockResolvedValue(2),
   },
   player: {
-    findFirst: jest.fn().mockResolvedValue(player),
+    findUnique: jest.fn().mockResolvedValue(player),
     update: jest.fn(),
   },
 };
@@ -95,7 +95,7 @@ describe('UserService', () => {
   describe('get a user', () => {
     it('should throw not found error', async () => {
       const getSpyOn = jest
-        .spyOn(prismaService.user, 'findFirst')
+        .spyOn(prismaService.user, 'findUnique')
         .mockResolvedValueOnce(null);
       try {
         await userService.getUser('74979d51-6d61-40bc-9a8f-73f11f910e32');
@@ -106,7 +106,7 @@ describe('UserService', () => {
     });
 
     it('returns a user', async () => {
-      const getSpyOn = jest.spyOn(prismaService.user, 'findFirst');
+      const getSpyOn = jest.spyOn(prismaService.user, 'findUnique');
       try {
         await userService.getUser('74979d51-6d61-40bc-9a8f-73f11f910e32');
       } catch (error) {
@@ -119,7 +119,7 @@ describe('UserService', () => {
   describe('logging in a user', () => {
     it('should throw not found exception', async () => {
       const userSpyOn = jest
-        .spyOn(prismaService.user, 'findFirst')
+        .spyOn(prismaService.user, 'findUnique')
         .mockResolvedValueOnce(null);
 
       try {
@@ -135,7 +135,7 @@ describe('UserService', () => {
     });
 
     it('should return a login credentials to the users', async () => {
-      const logSpyOn = jest.spyOn(prismaService.user, 'findFirst');
+      const logSpyOn = jest.spyOn(prismaService.user, 'findUnique');
       const loginSpyOn = jest
         .spyOn(utils, 'loginSignup')
         .mockResolvedValueOnce(loginDetail);
@@ -148,7 +148,7 @@ describe('UserService', () => {
 
   describe('add a new user ', () => {
     it('should throw exception if user already exists', async () => {
-      const addSpyOn = jest.spyOn(prismaService.user, 'findFirst');
+      const addSpyOn = jest.spyOn(prismaService.user, 'findUnique');
       try {
         await userService.addUser(addUser);
       } catch (error) {
@@ -159,7 +159,7 @@ describe('UserService', () => {
     });
     it('should create user', async () => {
       const addSpyOn = jest
-        .spyOn(prismaService.user, 'findFirst')
+        .spyOn(prismaService.user, 'findUnique')
         .mockResolvedValueOnce(null);
       const createSpyOn = jest.spyOn(prismaService.user, 'create');
       const userAdd = await userService.addUser(addUser);

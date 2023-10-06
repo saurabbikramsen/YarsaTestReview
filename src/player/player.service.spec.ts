@@ -186,6 +186,7 @@ describe('PlayerService', () => {
       const createSpyOn = jest.spyOn(prismaService.player, 'create');
       const logSignupSpyOn = jest.spyOn(utils, 'loginSignup');
       const signup = await playerService.loginSignup(signupDetails);
+
       expect(signup).toStrictEqual(playerLoginDetail);
       expect(findSpyOn).toBeCalledTimes(6);
       expect(logSignupSpyOn).toBeCalledTimes(1);

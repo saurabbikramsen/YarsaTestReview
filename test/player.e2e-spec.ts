@@ -12,6 +12,7 @@ describe('PlayerController E2E test (e2e)', () => {
     name: 'saurabsen',
     email: 'saurabsen@gmail.com',
     password: 'saurabsen123',
+    country: 'np',
   };
 
   beforeAll(async () => {
@@ -59,7 +60,11 @@ describe('PlayerController E2E test (e2e)', () => {
     const response = await request(app.getHttpServer())
       .put(`/player/${playerId}`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send({ name: faker.person.fullName(), email: faker.internet.email() })
+      .send({
+        name: faker.person.fullName(),
+        email: faker.internet.email(),
+        country: 'np',
+      })
       .expect(200);
 
     expect(response.body).toBeDefined();
@@ -71,7 +76,6 @@ describe('PlayerController E2E test (e2e)', () => {
       .delete(`/player/${playerId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .expect(200);
-    console.log('player id', response.body);
     expect(response.body).toBeDefined();
   });
 });

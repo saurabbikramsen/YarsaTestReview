@@ -26,7 +26,7 @@ import {
   PlayerUpdateDto,
   Statistics,
 } from './Dto/player.dto';
-import { UserResponseDto } from '../user/Dto/user.dto';
+import { UserLoginResponseDto, UserResponseDto } from '../user/Dto/user.dto';
 import { PlayerAuthGuard } from './guard/playerAuth.guard';
 import { AdminAuthGuard } from '../user/guard/admin.auth.guard';
 
@@ -90,7 +90,7 @@ export class PlayerController {
   }
 
   @Post()
-  @ApiResponse({ type: UserResponseDto })
+  @ApiResponse({ type: UserLoginResponseDto })
   @ApiOperation({
     summary: 'login(needed email & password only) or signup a player',
     description:

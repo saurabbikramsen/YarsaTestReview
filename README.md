@@ -3,6 +3,20 @@
 
 ## Features
 
+  - Seed one Admin user by default
+  - Admin can create, read, update, delete other admin and staff users
+  - Player will have a default stats table by design
+  - player can play games to increase their stats.
+  - Player can be created by exposed api endpoint, without any guards
+  - Admin can view and edit player info
+  - Staff can only view player info
+  - Admin can set a player inactive
+  - Leaderboard system to get top 5 players
+  - players can chat with each other
+  - They can also create new room and join existing one
+    - when you try join a room which was not present then new room is created with the given name.
+  - you can trigger a SSE message event to notify user of some occurred event.
+
 - Authentication and Authorization using guards
 - Redis cache implementation for storing user leaderboard
 - Play game to earn xp and coins
@@ -22,28 +36,81 @@
 - Create .env file
 - Copy the variables in example.env to .env file
 - Install and run postgres and redis in docker,
-    - run code: $ docker compose up -d
+    - make sure port 5432 and 6379 are available
+    - run code below:
+```bash
+  # install images and create docker container
+  $ docker compose up -d
+```
 
 - In the env file
     - Set your 'ACCESS_TOKEN_SECRET' AND 'REFRESH_TOKEN_SECRET'
     - Provide expiry time (in minutes or hour or day) for access and refresh token
+      - its value must be in format : 1m or 1h or 1d
     - Set an appropriate port number for nest-app in PORT variable
 
 
 - Install all packages using command below.
+
+```bash
+  # install all packages
+  $ pnpm install
+```
+
 - Apply all the migrations using command below.
+
+```bash
+  # apply all migrations
+  $ prisma migrate dev
+```
+
 - Run the app locally using pnpm start:dev as below for development mode.
 
+```bash
+  # development watch mode
+  $ pnpm start:dev
+```
+
 - After running locally 'http://localhost:[port]/api' is the route for swagger documentation.
-- Run e2e test which will seed(create) the first admin user:
-    - email : saurab@gmail.com
-    - password : saurab123
+  - Here you can see all the api endpoints present.
+- Run tests to see that every thing is working properly.
+  - Run unit tests using following command to see if all the functionalities are working properly.
+```bash
+  # run unit tests
+  $ pnpm run test
+```
+
+  - Run e2e test which will seed(create) the first admin user:
+     - email : saurab@gmail.com
+     - password : saurab123
+
+
+```bash
+  # run e2e tests
+  $ pnpm run test:e2e
+```
+
 - Create players and play games to increase their stats.
 - Seed 100 players using command below.
-- View leaderboard to see top 5 players.
+
+```bash
+  #seed 100 players
+  $ pnpm seed
+  ```
+    - seed 100 players
+    - The password for the seeded players is their_name123
+    - See the seeded players using command below:
+
+```bash
+  # to view database data
+  $ npx prisma studio
+  ```
+    - prisma studio will be running in: http://localhost:5555
+
 - For socket APIs documentation 'http://localhost:[port]/async-api' is the provided route.
 - For socket client reference there is 3 clients present in the clients folder.
 - Use socket documentation for chat system implementation.
+- Now you can call these api's from the frontend when ever you want.
 
 
 ## Installation
@@ -71,15 +138,13 @@
 ```bash
   #seed 100 players
   $ pnpm seed
-  ````
-- seed 100 players
-- The password for the seeded players is their_name123
-- See the seeded players using command below:
+  ```
+
 
 ```bash
   # to view database data
   $ npx prisma studio
-  ````
+  ```
 
 ```bash
   # build mode

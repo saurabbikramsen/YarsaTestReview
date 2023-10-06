@@ -46,6 +46,18 @@ export class PlayerController {
   async getLeaderboard() {
     return this.playerService.getLeaderboard();
   }
+
+  @UseGuards(PlayerAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Get data od a player',
+  })
+  @Get()
+  @ApiResponse({ type: PlayerGetDto })
+  getPlayer(@Req() request: any) {
+    return this.playerService.getPlayer(request.id);
+  }
+
   @UseGuards(PlayerAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
@@ -54,8 +66,8 @@ export class PlayerController {
   })
   @Get('/:id')
   @ApiResponse({ type: PlayerGetDto })
-  getPlayer(@Param('id') id: string) {
-    return this.playerService.getPlayer(id);
+  getBulkPlayer(@Param('id') id: string) {
+    return this.playerService.getBulkPlayer(id);
   }
 
   @UseGuards(PlayerAuthGuard)
@@ -84,10 +96,10 @@ export class PlayerController {
   @ApiOperation({
     summary: 'Play game to earn XP and coins',
   })
-  @Get('play/:id')
+  @Get('play')
   @ApiResponse({ type: Statistics })
-  playGame() {
-    return this.playerService.playGame();
+  playGame(@Req() request: any) {
+    return this.playerService.playGame(request.id);
   }
 
   @Post()
@@ -108,10 +120,10 @@ export class PlayerController {
     description:
       '**country must be one of the following values: np, in, us, au, af**',
   })
-  @Put('/:id')
+  @Put()
   @ApiResponse({ type: UserResponseDto })
-  updatePlayer(@Body() playerDto: PlayerUpdateDto, @Param('id') id: string) {
-    return this.playerService.updatePlayer(id, playerDto);
+  updatePlayer(@Body() playerDto: PlayerUpdateDto, @Req() request: any) {
+    return this.playerService.updatePlayer(request.id, playerDto);
   }
 
   @UseGuards(AdminAuthGuard)

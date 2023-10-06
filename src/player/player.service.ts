@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { PlayerDto, PlayerUpdateDto } from './Dto/player.dto';
@@ -57,6 +62,30 @@ export class PlayerService {
   }
 
   async getPlayer(id: string) {
+    const player = await this.prisma.player.findUnique({
+      where: { id, active: true },
+      select: {
+        id: true,
+        name: true,
+        active: true,
+        country: true,
+        statistics: {
+          select: {
+            games_won: true,
+            coins: true,
+            games_played: true,
+            experience_point: true,
+          },
+        },
+      },
+    });
+    if (!player) {
+      throw new NotFoundException('Player not found');
+    }
+    return player;
+  }
+
+  async getBulkPlayer(id: string) {
     if (id.includes(',')) {
       const players_ids = id.split(',');
       return this.prisma.player.findMany({
@@ -77,23 +106,7 @@ export class PlayerService {
         },
       });
     } else {
-      return this.prisma.player.findUnique({
-        where: { id, active: true },
-        select: {
-          id: true,
-          name: true,
-          active: true,
-          country: true,
-          statistics: {
-            select: {
-              games_won: true,
-              coins: true,
-              games_played: true,
-              experience_point: true,
-            },
-          },
-        },
-      });
+      return this.getPlayer(id);
     }
   }
 
@@ -152,15 +165,15 @@ export class PlayerService {
     }
   }
 
-  async playGame() {
-    // const player = await this.prisma.player.findUnique({
-    //   where: { id },
-    //   include: { statistics: true },
-    // });
-    // if (!player || player.active == false)
-    //   throw new BadRequestException('you cannot play the game');
-    //
-    // return this.playNewGame(player);
+  async playGame(id: string) {
+    const player = await this.prisma.player.findUnique({
+      where: { id },
+      include: { statistics: true },
+    });
+    if (!player || player.active == false)
+      throw new BadRequestException('you cannot play the game');
+
+    return this.playNewGame(player);
   }
 
   async loginSignup(playerDetails: PlayerDto) {

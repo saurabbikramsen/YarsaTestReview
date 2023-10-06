@@ -33,6 +33,7 @@ export class PlayerService {
       select: {
         name: true,
         active: true,
+        country: true,
         statistics: {
           select: {
             experience_point: true,
@@ -68,6 +69,7 @@ export class PlayerService {
           id: true,
           name: true,
           active: true,
+          country: true,
           statistics: {
             select: {
               games_won: true,
@@ -85,6 +87,7 @@ export class PlayerService {
           id: true,
           name: true,
           active: true,
+          country: true,
           statistics: {
             select: {
               games_won: true,
@@ -107,6 +110,7 @@ export class PlayerService {
         id: true,
         name: true,
         active: true,
+        country: true,
         statistics: {
           select: {
             coins: true,
@@ -164,6 +168,7 @@ export class PlayerService {
         name: playerDetails.name,
         email: playerDetails.email,
         password: passwordHash,
+        country: playerDetails.country,
         statistics: {
           create: {
             experience_point: 0,
@@ -182,7 +187,7 @@ export class PlayerService {
     if (!player) {
       throw new NotFoundException('player not found');
     }
-    return this.utils.updatePlayer(player);
+    return this.utils.updatePlayer(playerDetails);
   }
 
   async deletePlayer(id: string) {

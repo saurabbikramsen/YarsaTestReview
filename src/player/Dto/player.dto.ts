@@ -14,9 +14,14 @@ export class PlayerDto {
   name: string;
 
   @ApiProperty()
-  @IsEmail()
+  @IsString()
   @IsNotEmpty()
   email: string;
+
+  @ApiProperty()
+  @IsEmail()
+  @IsNotEmpty()
+  country: string;
 
   @ApiProperty()
   @IsString()
@@ -37,6 +42,12 @@ export class PlayerUpdateDto {
   @IsNotEmpty()
   @IsOptional()
   email: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  country: string;
 
   @ApiProperty()
   @IsString()
@@ -83,6 +94,9 @@ export class PlayerGetDto {
   name: string;
 
   @ApiProperty()
+  country: string;
+
+  @ApiProperty()
   password: string;
 
   @ApiProperty()
@@ -104,6 +118,9 @@ export class PlayerLeaderboardDto {
 
   @ApiProperty()
   password: string;
+
+  @ApiProperty()
+  country: string;
 
   @ApiProperty()
   active: boolean;

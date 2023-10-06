@@ -182,8 +182,8 @@ export class CommonUtils {
     });
   }
 
-  async passwordMatches(userPassword, inputPasword) {
-    const pwMatches = await argon.verify(userPassword, inputPasword);
+  async passwordMatches(userPassword: string, inputPassword: string) {
+    const pwMatches = await argon.verify(userPassword, inputPassword);
     if (!pwMatches) {
       throw new HttpException(
         "password or email doesn't match",

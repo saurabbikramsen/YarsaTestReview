@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { PlayerService } from './player.service';
@@ -85,8 +86,8 @@ export class PlayerController {
   })
   @Get('play/:id')
   @ApiResponse({ type: Statistics })
-  playGame(@Param('id') id: string) {
-    return this.playerService.playGame(id);
+  playGame() {
+    return this.playerService.playGame();
   }
 
   @Post()
@@ -130,8 +131,8 @@ export class PlayerController {
   @ApiOperation({
     summary: 'Delete a player',
   })
-  @Delete('/:id')
-  deletePlayer(@Param('id') id: string) {
-    return this.playerService.deletePlayer(id);
+  @Delete()
+  deletePlayer(@Req() request: any) {
+    return this.playerService.deletePlayer(request.id);
   }
 }

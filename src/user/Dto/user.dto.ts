@@ -33,7 +33,7 @@ export class UserUpdateDto {
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty({ enum: ['ADMIN', 'USER'] })
+  @ApiProperty({ enum: ['admin', 'user'] })
   @IsEnum(UserRole)
   role: UserRole;
 }

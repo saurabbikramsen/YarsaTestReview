@@ -11,6 +11,7 @@ import {
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   ChatsDto,
+  JoinRoomDto,
   PersonalChatsResponseDto,
   RoomChatsResponseDto,
 } from './Dto/chat.dto';
@@ -30,6 +31,13 @@ export class ChatsController {
     @Query('receiverId') receiverId: string,
   ) {
     return this.chatsService.getPersonalChats(senderId, receiverId);
+  }
+
+  @ApiOperation({ summary: 'Get all available rooms' })
+  @ApiResponse({ type: [JoinRoomDto] })
+  @Get('allRoom')
+  async getAllRooms() {
+    return this.chatsService.getAllRooms();
   }
 
   @ApiOperation({ summary: 'get all the chats of a particular room' })

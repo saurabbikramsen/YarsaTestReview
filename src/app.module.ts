@@ -11,6 +11,7 @@ import { CommonModule } from './utils/common.module';
 import { PlayerModule } from './player/player.module';
 import { SseModule } from './serverSentEvents/sse.module';
 import { ChatsModule } from './chats/chats.module';
+import { AdminModule } from './admin/admin.module';
 
 @Global()
 @Module({
@@ -33,6 +34,7 @@ import { ChatsModule } from './chats/chats.module';
     PlayerModule,
     SseModule,
     ChatsModule,
+    AdminModule,
   ],
 
   exports: [JwtModule],

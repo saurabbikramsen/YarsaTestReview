@@ -36,6 +36,7 @@ export class PlayerAuthGuard implements CanActivate {
           token_data.role == 'admin' ||
           token_data.role == 'staff'
         ) {
+          request.id = token_data.id;
           return true;
         } else {
           throw new ForbiddenException(

@@ -49,12 +49,6 @@ export class PlayerUpdateDto {
   @ApiProperty({ enum: ['np', 'in', 'us', 'au', 'af'] })
   @IsEnum(Country)
   country: Country;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  refresh_key: string;
 }
 
 export class PlayerLoginDto {

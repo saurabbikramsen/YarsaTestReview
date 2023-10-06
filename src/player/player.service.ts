@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { PlayerDto, PlayerUpdateDto } from './Dto/player.dto';
@@ -157,15 +152,15 @@ export class PlayerService {
     }
   }
 
-  async playGame(id: string) {
-    const player = await this.prisma.player.findUnique({
-      where: { id },
-      include: { statistics: true },
-    });
-    if (!player || player.active == false)
-      throw new BadRequestException('you cannot play the game');
-
-    return this.playNewGame(player);
+  async playGame() {
+    // const player = await this.prisma.player.findUnique({
+    //   where: { id },
+    //   include: { statistics: true },
+    // });
+    // if (!player || player.active == false)
+    //   throw new BadRequestException('you cannot play the game');
+    //
+    // return this.playNewGame(player);
   }
 
   async loginSignup(playerDetails: PlayerDto) {

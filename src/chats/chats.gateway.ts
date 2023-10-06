@@ -257,6 +257,11 @@ export class ChatsGateway {
       },
     });
   }
+
+  async getAllRooms() {
+    return this.prisma.rooms.findMany({ select: { name: true } });
+  }
+
   async getRoomChats(roomName: string) {
     return this.prisma.rooms.findUnique({
       where: { name: roomName },

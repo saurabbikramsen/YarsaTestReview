@@ -72,7 +72,10 @@ export class UserController {
     summary: 'Adding a new user (admin/staff)',
   })
   @Post()
-  @ApiResponse({ type: UserResponseDto })
+  @ApiResponse({
+    type: UserResponseDto,
+    description: '**role must be one of the following values: admin, staff**',
+  })
   addUser(@Body() userDto: UserDto) {
     return this.userService.addUser(userDto);
   }
@@ -85,7 +88,9 @@ export class UserController {
   }
 
   @Post('login')
-  @ApiResponse({ type: UserLoginResponseDto })
+  @ApiResponse({
+    type: UserLoginResponseDto,
+  })
   @ApiOperation({
     summary: 'User(admin/staff) login',
   })
@@ -107,6 +112,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Updating the user data of given id',
+    description: '**role must be one of the following values: admin, staff**',
   })
   @Put('/:id')
   @ApiResponse({ type: UserResponseDto })

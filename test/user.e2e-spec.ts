@@ -99,7 +99,7 @@ describe('UserController E2E test (e2e)', () => {
 
   it('should generate new tokens', async () => {
     const response = await request(app.getHttpServer())
-      .post(`/user/generaterefresh`)
+      .post(`/common/generaterefresh`)
       .send({ refreshToken })
       .expect(201);
 

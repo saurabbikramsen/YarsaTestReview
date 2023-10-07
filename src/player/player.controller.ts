@@ -21,7 +21,7 @@ import {
   PlayerGetDto,
   PlayerLeaderboardDto,
   PlayerUpdateDto,
-  Statistics,
+  PlayResponse,
 } from './Dto/player.dto';
 import { UserLoginResponseDto, UserResponseDto } from '../user/Dto/user.dto';
 import { PlayerAuthGuard } from './guard/playerAuth.guard';
@@ -71,7 +71,7 @@ export class PlayerController {
     summary: 'Play game to earn XP and coins',
   })
   @Get('play/game')
-  @ApiResponse({ type: Statistics })
+  @ApiResponse({ type: PlayResponse })
   playGame(@Req() request: any) {
     return this.playerService.playGame(request.id);
   }

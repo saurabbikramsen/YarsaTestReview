@@ -17,8 +17,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
+  AllRoomResponse,
   ChatsDto,
-  JoinRoomDto,
   PersonalChatsResponseDto,
   RoomChatsResponseDto,
 } from './Dto/chat.dto';
@@ -46,7 +46,7 @@ export class ChatsController {
   @UseGuards(PlayerAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all available rooms' })
-  @ApiResponse({ type: [JoinRoomDto] })
+  @ApiResponse({ type: [AllRoomResponse] })
   @Get('allRoom')
   async getAllRooms() {
     return this.chatsService.getAllRooms();

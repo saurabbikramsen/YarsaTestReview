@@ -259,7 +259,9 @@ export class ChatsGateway {
   }
 
   async getAllRooms() {
-    return this.prisma.rooms.findMany({ select: { name: true } });
+    return this.prisma.rooms.findMany({
+      select: { name: true, players: { select: { name: true, id: true } } },
+    });
   }
 
   async getRoomChats(roomName: string) {

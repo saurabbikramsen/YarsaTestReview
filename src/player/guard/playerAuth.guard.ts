@@ -30,6 +30,7 @@ export class PlayerAuthGuard implements CanActivate {
         const player = await this.prisma.player.findUnique({
           where: { id: token_data.id },
         });
+        if (!player) throw new NotFoundException('Player Not Present');
 
         if (token_data.role == 'player' && player.active == true) {
           request.id = token_data.id;

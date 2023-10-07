@@ -81,6 +81,14 @@ export class Statistics {
   @ApiProperty()
   games_won: number;
 }
+
+export class PlayResponse {
+  @ApiProperty()
+  data: Statistics;
+
+  @ApiProperty()
+  message: string;
+}
 export class PlayerGetDto {
   @ApiProperty()
   id: string;

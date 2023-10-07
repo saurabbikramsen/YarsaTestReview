@@ -68,4 +68,15 @@ export class RoomChatsResponseDto {
   roomName: string;
 }
 
+export class PlayerNameId {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  name: string;
+}
+export class AllRoomResponse {
+  @ApiProperty()
+  name: string;
+}
 export class ConnectionDto {}

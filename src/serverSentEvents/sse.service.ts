@@ -7,6 +7,7 @@ export class SseService {
 
   send(message: string) {
     this.sseSubject.next(message);
+    return { message: `${message} message sent successfully` };
   }
 
   stream() {

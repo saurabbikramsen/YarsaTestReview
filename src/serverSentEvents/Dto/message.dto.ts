@@ -7,3 +7,8 @@ export class MessageDto {
   @IsString()
   message: string;
 }
+
+export class ResponseSse {
+  @ApiProperty()
+  data: string;
+}

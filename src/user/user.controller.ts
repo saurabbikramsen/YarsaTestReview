@@ -14,8 +14,6 @@ import {
 import { UserService } from './user.service';
 import {
   PaginatedResponseDto,
-  RefreshDto,
-  RefreshResponseDto,
   SeedDto,
   UserDto,
   UserGetDto,
@@ -48,6 +46,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: `Get a specific user for the given id `,
+    description: '**Can be accessed by Staff/Admin**',
   })
   @Get('/:id')
   @ApiResponse({ type: UserGetDto })
@@ -58,6 +57,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Get all the Users',
+    description: '**Can be accessed by Staff / Admin**',
   })
   @ApiQuery({ name: 'searchKey', required: false, type: String })
   @ApiQuery({ name: 'page', required: true, type: Number })
@@ -76,7 +76,8 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Adding a new user ( admin/staff )',
-    description: '**role must be one of the following values: admin, staff**',
+    description:
+      '**Role must be one of the following values: admin,staff.  Can be accessed by Admin only**',
   })
   @Post()
   @ApiResponse({
@@ -107,21 +108,12 @@ export class UserController {
     return this.userService.loginUser(loginDto);
   }
 
-  @Post('generaterefresh')
-  @ApiResponse({ type: RefreshResponseDto })
-  @ApiOperation({
-    summary: 'generate a new access and refresh token',
-  })
-  expireRefreshToken(@Body() refreshDto: RefreshDto) {
-    console.log(refreshDto);
-    return this.userService.generateNewTokens(refreshDto);
-  }
-
   @UseGuards(AdminAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Updating the user data of given id',
-    description: '**role must be one of the following values: admin, staff**',
+    description:
+      '**role must be one of the following values: admin,staff. Can be accessed by admin only**',
   })
   @Put('/:id')
   @ApiResponse({ type: UserResponseDto })
@@ -133,6 +125,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Delete a specific user with given id',
+    description: '**Can be accessed by Admin only**',
   })
   @Delete('/:id')
   @ApiResponse({ type: UserResponseDto })
@@ -141,7 +134,10 @@ export class UserController {
   }
 
   @UseGuards(AdminAuthGuard)
-  @ApiOperation({ summary: 'Admin route to delete a player' })
+  @ApiOperation({
+    summary: 'Admin route to delete a player',
+    description: '**Can be accessed by Admin only**',
+  })
   @ApiResponse({ type: UserResponseDto })
   @ApiBearerAuth()
   @Delete('player/:id')
@@ -150,7 +146,10 @@ export class UserController {
   }
 
   @UseGuards(AdminAuthGuard)
-  @ApiOperation({ summary: 'Admin route to update a player' })
+  @ApiOperation({
+    summary: 'Admin route to update a player',
+    description: '**Can be accessed by Admin only**',
+  })
   @ApiResponse({ type: UserResponseDto })
   @ApiBearerAuth()
   @Put('player/:id')
@@ -166,6 +165,7 @@ export class UserController {
   @ApiResponse({ type: UserResponseDto })
   @ApiOperation({
     summary: 'Set the player to inactive state',
+    description: '**Can be accessed by Admin only**',
   })
   @Patch('/player/setInactive/:id')
   setInactive(@Param('id') id: string) {
@@ -182,6 +182,7 @@ export class UserController {
   @ApiResponse({ type: [PlayerGetDto] })
   @ApiOperation({
     summary: 'Get all the players',
+    description: '**Can be accessed by Staff/Admin**',
   })
   getAllPlayers(
     @Query('searchKey') searchKey = '',
@@ -193,12 +194,14 @@ export class UserController {
     return this.playerService.getAllPlayers(searchKey, pageSize, skip, country);
   }
 
-  @UseGuards(AdminAuthGuard)
+  @UseGuards(StaffAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ type: PlayerGetDto })
   @ApiOperation({
-    summary: 'Admin/staff route to get a user',
+    summary: 'Admin/staff route to get a player',
+    description: '**Can be accessed by Staff/Admin**',
   })
+  @Get('player/:id')
   getPlayer(@Param('id') id: string) {
     return this.playerService.getPlayer(id);
   }

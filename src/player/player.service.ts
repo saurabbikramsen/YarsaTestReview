@@ -57,7 +57,6 @@ export class PlayerService {
       rankedPlayers,
       parseInt(this.config.get('REDIS_STORE_TIME')),
     );
-    this.sseService.send('Leaderboard Updated');
     return rankedPlayers;
   }
 
@@ -228,11 +227,18 @@ export class PlayerService {
     const game_won = Boolean(Math.round(Math.random()));
     const points = Math.floor(Math.random() * (20 - 10 + 1) + 10);
     const xp = player.statistics.experience_point;
+    const highestplayer = await this.prisma.statistics.findFirst({
+      orderBy: { experience_point: 'desc' },
+    });
 
     const playerData = await this.prisma.statistics.update({
       where: { id: player.stats_id },
       data: {
-        experience_point: game_won ? xp + points : xp < 20 ? xp : xp - points,
+        experience_point: game_won
+          ? xp + points
+          : xp < 20
+          ? xp
+          : xp - (points - 9),
         games_played: player.statistics.games_played + 1,
         games_won: game_won
           ? player.statistics.games_won + 1
@@ -240,6 +246,10 @@ export class PlayerService {
         coins: player.statistics.coins + points,
       },
     });
+    if (playerData.experience_point > highestplayer.experience_point)
+      this.sseService.send(
+        `${player.name} is now at the top of the leaderboard with ${playerData.experience_point} XP`,
+      );
 
     return {
       data: {

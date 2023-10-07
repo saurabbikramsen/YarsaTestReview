@@ -22,7 +22,8 @@ export class SseController {
   constructor(private sseService: SseService) {}
 
   @ApiOperation({
-    summary: 'Provide response for sse event',
+    summary:
+      'Provide response for sse event when a new player gets to the top of the leaderboard',
     description:
       '**It responds to the eventsource for the sse event. with api: [url]/sse/event**',
   })

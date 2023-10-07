@@ -31,6 +31,7 @@ const PrismaServiceMock = {
   },
   statistics: {
     update: jest.fn().mockResolvedValue(statistics),
+    findFirst: jest.fn().mockResolvedValue(statistics),
   },
 };
 const utils = {
@@ -282,9 +283,11 @@ describe('PlayerService', () => {
       expect(findSpyOn).toBeCalledTimes(12);
     });
   });
-  describe('should update the statistics and return the updated statistics', () => {
+  describe('should play game and update the statistics and return the updated statistics', () => {
     it('should update statistics and return it', async () => {
       const updateStatsSpyOn = jest.spyOn(prismaService.statistics, 'update');
+      const findSpyOn = jest.spyOn(prismaService.statistics, 'findFirst');
+
       const updateStats = await playerService.playNewGame(player);
 
       expect(updateStats).toEqual(
@@ -298,6 +301,7 @@ describe('PlayerService', () => {
           message: expect.any(String),
         }),
       );
+      expect(findSpyOn).toBeCalledTimes(1);
       expect(updateStatsSpyOn).toBeCalledTimes(1);
     });
   });

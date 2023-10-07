@@ -1,5 +1,4 @@
 import { Global, Module } from '@nestjs/common';
-
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
@@ -11,7 +10,6 @@ import { CommonModule } from './utils/common.module';
 import { PlayerModule } from './player/player.module';
 import { SseModule } from './serverSentEvents/sse.module';
 import { ChatsModule } from './chats/chats.module';
-import { AdminModule } from './admin/admin.module';
 
 @Global()
 @Module({
@@ -34,7 +32,6 @@ import { AdminModule } from './admin/admin.module';
     PlayerModule,
     SseModule,
     ChatsModule,
-    AdminModule,
   ],
 
   exports: [JwtModule],

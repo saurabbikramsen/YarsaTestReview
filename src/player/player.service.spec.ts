@@ -90,18 +90,42 @@ describe('PlayerService', () => {
       expect(pageSpyOn).toBeCalledTimes(1);
     });
   });
+
+  describe('get a player ', () => {
+    it('should throw not found exception', async () => {
+      const findSpyOn = jest
+        .spyOn(prismaService.player, 'findUnique')
+        .mockResolvedValueOnce(null);
+      try {
+        await playerService.getPlayer('113360ab-5d52-4df6-a2d2-02139a116b15');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual('Player not found');
+      }
+      expect(findSpyOn).toBeCalledTimes(1);
+    });
+    it('should return a player', async () => {
+      const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
+      const getPlayer = await playerService.getPlayer(
+        '74979d51-3s61-40bc-9a8f-73f11f910e32',
+      );
+
+      expect(getPlayer).toStrictEqual(player);
+      expect(findSpyOn).toBeCalledTimes(2);
+    });
+  });
+
   describe('return a user or bulk of users', () => {
     it('should return a user', async () => {
-      const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
-      const getUser = await playerService.getPlayer(
+      playerService.getPlayer = jest.fn().mockResolvedValue(player);
+      const getUser = await playerService.getBulkPlayer(
         '82e0c2d5-ed5e-4baf-ab1e-4c8aa5308452',
       );
       expect(getUser).toStrictEqual(player);
-      expect(findSpyOn).toBeCalledTimes(1);
     });
     it('should return bulk of users', async () => {
       const findBulkSpy = jest.spyOn(prismaService.player, 'findMany');
-      const getBulk = await playerService.getPlayer(
+      const getBulk = await playerService.getBulkPlayer(
         '82e0c2d5-ed5e-4baf-ab1e-4c8aa5308452,113360ab-5d52-4df6-a2d2-02139a116b15',
       );
       expect(getBulk).toStrictEqual(players);
@@ -119,7 +143,7 @@ describe('PlayerService', () => {
         expect(error).toBeInstanceOf(NotFoundException);
         expect(error.message).toEqual('no player found');
       }
-      expect(findSpyOn).toBeCalledTimes(2);
+      expect(findSpyOn).toBeCalledTimes(3);
     });
     it('should set player inactive if active and vice versa ', async () => {
       const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
@@ -131,7 +155,7 @@ describe('PlayerService', () => {
           message: expect.any(String),
         }),
       );
-      expect(findSpyOn).toBeCalledTimes(3);
+      expect(findSpyOn).toBeCalledTimes(4);
     });
   });
   describe('should play game and update stats', () => {
@@ -145,7 +169,7 @@ describe('PlayerService', () => {
         expect(error).toBeInstanceOf(BadRequestException);
         expect(error.message).toStrictEqual('you cannot play the game');
       }
-      expect(findSpyOn).toBeCalledTimes(4);
+      expect(findSpyOn).toBeCalledTimes(5);
     });
     it('should update the statistics of player after playing games', async () => {
       const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
@@ -154,7 +178,7 @@ describe('PlayerService', () => {
         '113360ab-5d52-4df6-a2d2-02139a116b15',
       );
       expect(playGame).toStrictEqual(playResponse);
-      expect(findSpyOn).toBeCalledTimes(5);
+      expect(findSpyOn).toBeCalledTimes(6);
     });
   });
   describe('should get leaderboard of 5 top players', () => {
@@ -188,7 +212,7 @@ describe('PlayerService', () => {
       const signup = await playerService.loginSignup(signupDetails);
 
       expect(signup).toStrictEqual(playerLoginDetail);
-      expect(findSpyOn).toBeCalledTimes(6);
+      expect(findSpyOn).toBeCalledTimes(7);
       expect(logSignupSpyOn).toBeCalledTimes(1);
       expect(createSpyOn).toBeCalledTimes(1);
     });
@@ -199,7 +223,7 @@ describe('PlayerService', () => {
       const logSignupSpyOn = jest.spyOn(utils, 'loginSignup');
       const loginPlayer = await playerService.loginSignup(signupDetails);
       expect(loginPlayer).toStrictEqual(playerLoginDetail);
-      expect(findSpyOn).toBeCalledTimes(7);
+      expect(findSpyOn).toBeCalledTimes(8);
       expect(logSignupSpyOn).toBeCalledTimes(2);
     });
   });
@@ -217,7 +241,7 @@ describe('PlayerService', () => {
         expect(error).toBeInstanceOf(NotFoundException);
         expect(error.message).toStrictEqual('player not found');
       }
-      expect(findSpyOn).toBeCalledTimes(8);
+      expect(findSpyOn).toBeCalledTimes(9);
     });
     it('should update the player', async () => {
       const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
@@ -231,7 +255,7 @@ describe('PlayerService', () => {
           message: expect.any(String),
         }),
       );
-      expect(findSpyOn).toBeCalledTimes(9);
+      expect(findSpyOn).toBeCalledTimes(10);
       expect(playerUpdateSpyOn).toBeCalledTimes(1);
     });
   });
@@ -247,7 +271,7 @@ describe('PlayerService', () => {
         expect(error).toBeInstanceOf(NotFoundException);
         expect(error.message).toStrictEqual('player not found');
       }
-      expect(findSpyOn).toBeCalledTimes(10);
+      expect(findSpyOn).toBeCalledTimes(11);
     });
     it('should delete the player', async () => {
       const findSpyOn = jest.spyOn(prismaService.player, 'findUnique');
@@ -255,7 +279,7 @@ describe('PlayerService', () => {
       expect(deletePlayer).toStrictEqual({
         message: 'player deleted successfully',
       });
-      expect(findSpyOn).toBeCalledTimes(11);
+      expect(findSpyOn).toBeCalledTimes(12);
     });
   });
   describe('should update the statistics and return the updated statistics', () => {

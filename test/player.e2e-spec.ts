@@ -48,17 +48,18 @@ describe('PlayerController E2E test (e2e)', () => {
 
     expect(response.body).toBeDefined();
   });
-  it('should play the game', async () => {
+  it('should play a game and increase stats', async () => {
     const response = await request(app.getHttpServer())
-      .get(`/player/play/${playerId}`)
+      .get(`/player/play/game`)
       .set('Authorization', `Bearer ${accessToken}`)
       .expect(200);
 
     expect(response.body).toBeDefined();
   });
+
   it('should update the player', async () => {
     const response = await request(app.getHttpServer())
-      .put(`/player/${playerId}`)
+      .put(`/player`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: faker.person.fullName(),
@@ -73,7 +74,7 @@ describe('PlayerController E2E test (e2e)', () => {
   it('should delete a player', async () => {
     console.log(playerId);
     const response = await request(app.getHttpServer())
-      .delete(`/player/${playerId}`)
+      .delete(`/player`)
       .set('Authorization', `Bearer ${accessToken}`)
       .expect(200);
     expect(response.body).toBeDefined();

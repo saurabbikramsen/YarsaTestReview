@@ -4,11 +4,8 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
-  Patch,
   Post,
   Put,
-  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -16,7 +13,6 @@ import { PlayerService } from './player.service';
 import {
   ApiBearerAuth,
   ApiOperation,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -29,7 +25,6 @@ import {
 } from './Dto/player.dto';
 import { UserLoginResponseDto, UserResponseDto } from '../user/Dto/user.dto';
 import { PlayerAuthGuard } from './guard/playerAuth.guard';
-import { AdminAuthGuard } from '../user/guard/admin.auth.guard';
 
 @ApiTags('player')
 @Controller('player')
@@ -50,7 +45,7 @@ export class PlayerController {
   @UseGuards(PlayerAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Get data od a player',
+    summary: 'Get data of a player',
   })
   @Get()
   @ApiResponse({ type: PlayerGetDto })
@@ -62,33 +57,12 @@ export class PlayerController {
   @ApiBearerAuth()
   @ApiOperation({
     summary:
-      "Get the data of a specific player or bulk of players by providing multiple Id's seperated by comma",
+      "get data of bulk of players by providing multiple Id's seperated by comma",
   })
-  @Get('/:id')
+  @Get('/:ids')
   @ApiResponse({ type: PlayerGetDto })
-  getBulkPlayer(@Param('id') id: string) {
-    return this.playerService.getBulkPlayer(id);
-  }
-
-  @UseGuards(PlayerAuthGuard)
-  @ApiBearerAuth()
-  @ApiQuery({ name: 'searchKey', required: false, type: String })
-  @ApiQuery({ name: 'page', required: true, type: Number })
-  @ApiQuery({ name: 'pageSize', required: true, type: Number })
-  @ApiQuery({ name: 'country', required: false, type: String })
-  @Get()
-  @ApiResponse({ type: [PlayerGetDto] })
-  @ApiOperation({
-    summary: 'Get all the players',
-  })
-  getAllPlayers(
-    @Query('searchKey') searchKey = '',
-    @Query('page', ParseIntPipe) page = 1,
-    @Query('pageSize', ParseIntPipe) pageSize = 10,
-    @Query('country') country = '',
-  ) {
-    const skip = page ? (page - 1) * pageSize : 0;
-    return this.playerService.getAllPlayers(searchKey, pageSize, skip, country);
+  getBulkPlayer(@Param('ids') ids: string) {
+    return this.playerService.getBulkPlayer(ids);
   }
 
   @UseGuards(PlayerAuthGuard)
@@ -96,7 +70,7 @@ export class PlayerController {
   @ApiOperation({
     summary: 'Play game to earn XP and coins',
   })
-  @Get('play')
+  @Get('play/game')
   @ApiResponse({ type: Statistics })
   playGame(@Req() request: any) {
     return this.playerService.playGame(request.id);
@@ -124,17 +98,6 @@ export class PlayerController {
   @ApiResponse({ type: UserResponseDto })
   updatePlayer(@Body() playerDto: PlayerUpdateDto, @Req() request: any) {
     return this.playerService.updatePlayer(request.id, playerDto);
-  }
-
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ type: UserResponseDto })
-  @ApiOperation({
-    summary: 'Set the player to inactive state',
-  })
-  @Patch('setInactive/:id')
-  setInactive(@Param('id') id: string) {
-    return this.playerService.setInactive(id);
   }
 
   @UseGuards(PlayerAuthGuard)

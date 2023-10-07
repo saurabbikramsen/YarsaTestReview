@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Response } from '@nestjs/common';
+import { Body, Controller, Get, Post, Response } from '@nestjs/common';
 import { SseService } from './sse.service';
 import { MessageDto } from './Dto/message.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -8,6 +8,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 export class SseController {
   constructor(private sseService: SseService) {}
 
+  @ApiOperation({ summary: 'Provide response for sse event' })
+  @Get('event')
   sseEvents(@Response() res) {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -19,6 +21,7 @@ export class SseController {
       res.write(`data: ${message}\n\n`);
     });
   }
+
   @ApiOperation({ summary: 'Trigger a SSE event message' })
   @Post('trigger')
   triggerEvent(@Body() data: MessageDto) {

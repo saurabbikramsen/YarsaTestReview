@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -32,11 +33,16 @@ import {
 } from '@nestjs/swagger';
 import { AdminAuthGuard } from './guard/admin.auth.guard';
 import { StaffAuthGuard } from './guard/staff.auth.guard';
+import { PlayerGetDto, PlayerUpdateDto } from '../player/Dto/player.dto';
+import { PlayerService } from '../player/player.service';
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private readonly playerService: PlayerService,
+  ) {}
 
   @UseGuards(StaffAuthGuard)
   @ApiBearerAuth()
@@ -69,12 +75,12 @@ export class UserController {
   @UseGuards(AdminAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Adding a new user (admin/staff)',
+    summary: 'Adding a new user ( admin/staff )',
+    description: '**role must be one of the following values: admin, staff**',
   })
   @Post()
   @ApiResponse({
     type: UserResponseDto,
-    description: '**role must be one of the following values: admin, staff**',
   })
   addUser(@Body() userDto: UserDto) {
     return this.userService.addUser(userDto);
@@ -82,7 +88,10 @@ export class UserController {
 
   @Post('seed')
   @ApiResponse({ type: UserResponseDto })
-  @ApiOperation({ summary: 'Seed the first admin user' })
+  @ApiOperation({
+    summary: 'Seed the first admin user',
+    description: '**This only works if there is no admin present**',
+  })
   seedAdmin(@Body() seedDto: SeedDto) {
     return this.userService.seedAdmin(seedDto);
   }
@@ -129,5 +138,68 @@ export class UserController {
   @ApiResponse({ type: UserResponseDto })
   deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Admin route to delete a player' })
+  @ApiResponse({ type: UserResponseDto })
+  @ApiBearerAuth()
+  @Delete('player/:id')
+  async deletePlayer(@Param('id') id: string) {
+    return this.playerService.deletePlayer(id);
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Admin route to update a player' })
+  @ApiResponse({ type: UserResponseDto })
+  @ApiBearerAuth()
+  @Put('player/:id')
+  async updatePlayer(
+    @Body() playerData: PlayerUpdateDto,
+    @Param('id') id: string,
+  ) {
+    return this.playerService.updatePlayer(id, playerData);
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ type: UserResponseDto })
+  @ApiOperation({
+    summary: 'Set the player to inactive state',
+  })
+  @Patch('/player/setInactive/:id')
+  setInactive(@Param('id') id: string) {
+    return this.playerService.setInactive(id);
+  }
+
+  @UseGuards(StaffAuthGuard)
+  @ApiBearerAuth()
+  @ApiQuery({ name: 'searchKey', required: false, type: String })
+  @ApiQuery({ name: 'page', required: true, type: Number })
+  @ApiQuery({ name: 'pageSize', required: true, type: Number })
+  @ApiQuery({ name: 'country', required: false, type: String })
+  @Get('players')
+  @ApiResponse({ type: [PlayerGetDto] })
+  @ApiOperation({
+    summary: 'Get all the players',
+  })
+  getAllPlayers(
+    @Query('searchKey') searchKey = '',
+    @Query('page', ParseIntPipe) page = 1,
+    @Query('pageSize', ParseIntPipe) pageSize = 10,
+    @Query('country') country = '',
+  ) {
+    const skip = page ? (page - 1) * pageSize : 0;
+    return this.playerService.getAllPlayers(searchKey, pageSize, skip, country);
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ type: PlayerGetDto })
+  @ApiOperation({
+    summary: 'Admin/staff route to get a user',
+  })
+  getPlayer(@Param('id') id: string) {
+    return this.playerService.getPlayer(id);
   }
 }

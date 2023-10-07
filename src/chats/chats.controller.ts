@@ -7,20 +7,30 @@ import {
   Param,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   ChatsDto,
   JoinRoomDto,
   PersonalChatsResponseDto,
   RoomChatsResponseDto,
 } from './Dto/chat.dto';
+import { PlayerAuthGuard } from '../player/guard/playerAuth.guard';
 
 @ApiTags('Chats')
 @Controller('chats')
 export class ChatsController {
   constructor(private chatsService: ChatsGateway) {}
 
+  @UseGuards(PlayerAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'get all the personal chats between two players' })
   @ApiResponse({ type: PersonalChatsResponseDto })
   @ApiQuery({ name: 'senderId', required: true, type: String })
@@ -33,6 +43,8 @@ export class ChatsController {
     return this.chatsService.getPersonalChats(senderId, receiverId);
   }
 
+  @UseGuards(PlayerAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all available rooms' })
   @ApiResponse({ type: [JoinRoomDto] })
   @Get('allRoom')
@@ -40,6 +52,8 @@ export class ChatsController {
     return this.chatsService.getAllRooms();
   }
 
+  @UseGuards(PlayerAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'get all the chats of a particular room' })
   @ApiResponse({ type: RoomChatsResponseDto })
   @ApiQuery({ name: 'roomName', required: true, type: String })
@@ -48,6 +62,8 @@ export class ChatsController {
     return this.chatsService.getRoomChats(roomName);
   }
 
+  @UseGuards(PlayerAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'update the chat message' })
   @ApiResponse({ type: ChatsDto })
   @Put('/:id')
@@ -55,6 +71,8 @@ export class ChatsController {
     return this.chatsService.updateChats(id, updateData);
   }
 
+  @UseGuards(PlayerAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'delete the chat message' })
   @ApiResponse({ type: ChatsDto })
   @Delete('/:id')

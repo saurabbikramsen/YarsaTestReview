@@ -31,11 +31,7 @@ export class PlayerAuthGuard implements CanActivate {
           where: { id: token_data.id },
         });
 
-        if (
-          (token_data.role == 'player' && player.active == true) ||
-          token_data.role == 'admin' ||
-          token_data.role == 'staff'
-        ) {
+        if (token_data.role == 'player' && player.active == true) {
           request.id = token_data.id;
           return true;
         } else {

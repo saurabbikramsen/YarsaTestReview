@@ -152,7 +152,7 @@ export class UserController {
   })
   @ApiResponse({ type: UserResponseDto })
   @ApiBearerAuth()
-  @Put('player/:id')
+  @Put('player/update/:id')
   async updatePlayer(
     @Body() playerData: PlayerUpdateDto,
     @Param('id') id: string,

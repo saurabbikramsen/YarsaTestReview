@@ -203,7 +203,6 @@ export class UserController {
     @Query('country') country = '',
   ) {
     const skip = page ? (page - 1) * pageSize : 0;
-    console.log('inside controller');
     return this.playerService.getAllPlayers(searchKey, pageSize, skip, country);
   }
 }

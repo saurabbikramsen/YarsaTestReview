@@ -174,28 +174,6 @@ export class UserController {
 
   @UseGuards(StaffAuthGuard)
   @ApiBearerAuth()
-  @ApiQuery({ name: 'searchKey', required: false, type: String })
-  @ApiQuery({ name: 'page', required: true, type: Number })
-  @ApiQuery({ name: 'pageSize', required: true, type: Number })
-  @ApiQuery({ name: 'country', required: false, type: String })
-  @Get('players')
-  @ApiResponse({ type: [PlayerGetDto] })
-  @ApiOperation({
-    summary: 'Get all the players',
-    description: '**Can be accessed by Staff/Admin**',
-  })
-  getAllPlayers(
-    @Query('searchKey') searchKey = '',
-    @Query('page', ParseIntPipe) page = 1,
-    @Query('pageSize', ParseIntPipe) pageSize = 10,
-    @Query('country') country = '',
-  ) {
-    const skip = page ? (page - 1) * pageSize : 0;
-    return this.playerService.getAllPlayers(searchKey, pageSize, skip, country);
-  }
-
-  @UseGuards(StaffAuthGuard)
-  @ApiBearerAuth()
   @ApiResponse({ type: PlayerGetDto })
   @ApiOperation({
     summary: 'Admin/staff route to get a player',
@@ -204,5 +182,28 @@ export class UserController {
   @Get('player/:id')
   getPlayer(@Param('id') id: string) {
     return this.playerService.getPlayer(id);
+  }
+
+  @UseGuards(StaffAuthGuard)
+  @ApiBearerAuth()
+  @ApiQuery({ name: 'searchKey', required: false, type: String })
+  @ApiQuery({ name: 'page', required: true, type: Number })
+  @ApiQuery({ name: 'pageSize', required: true, type: Number })
+  @ApiQuery({ name: 'country', required: false, type: String })
+  @ApiResponse({ type: [PlayerGetDto] })
+  @ApiOperation({
+    summary: 'Get all the players',
+    description: '**Can be accessed by Staff/Admin**',
+  })
+  @Get('players/all')
+  getAllPlayers(
+    @Query('searchKey') searchKey = '',
+    @Query('page', ParseIntPipe) page = 1,
+    @Query('pageSize', ParseIntPipe) pageSize = 10,
+    @Query('country') country = '',
+  ) {
+    const skip = page ? (page - 1) * pageSize : 0;
+    console.log('inside controller');
+    return this.playerService.getAllPlayers(searchKey, pageSize, skip, country);
   }
 }

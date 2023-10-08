@@ -115,6 +115,7 @@ export class PlayerService {
     skip: number,
     country: string,
   ) {
+    console.log('inside get all service');
     const players = await this.prisma.player.findMany({
       where: {
         name: { contains: search, mode: 'insensitive' },

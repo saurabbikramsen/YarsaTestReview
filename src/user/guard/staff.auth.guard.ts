@@ -23,6 +23,8 @@ export class StaffAuthGuard implements CanActivate {
         });
 
         if (token_data.role == 'staff' || token_data.role == 'admin') {
+          console.log('inside the staff guard');
+          console.log(token_data);
           return true;
         } else {
           new UnauthorizedException(

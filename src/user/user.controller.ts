@@ -53,6 +53,7 @@ export class UserController {
   getUser(@Param('id') id: string) {
     return this.userService.getUser(id);
   }
+
   @UseGuards(StaffAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({

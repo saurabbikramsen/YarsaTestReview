@@ -50,7 +50,7 @@ export class ChatsGateway {
       payload: ConnectionDto,
       headers: {
         authorization: {
-          description: 'access token of the user',
+          description: 'Bearer access token of the user',
         },
       },
     },
@@ -156,7 +156,7 @@ export class ChatsGateway {
   ) {
     const { roomName, message } = data;
     const sender = client.data.user;
-    const room = await this.prisma.rooms.findFirst({
+    const room = await this.prisma.rooms.findUnique({
       where: { name: roomName },
     });
     if (room) {
@@ -193,7 +193,7 @@ export class ChatsGateway {
     const { roomName } = data;
     const sender = client.data.user;
     client.leave(roomName);
-    const room = await this.prisma.rooms.findFirst({
+    const room = await this.prisma.rooms.findUnique({
       where: { name: roomName },
     });
     if (room) {
@@ -201,7 +201,7 @@ export class ChatsGateway {
         where: { name: roomName },
         data: { players: { disconnect: { id: sender.id } } },
       });
-      const roomPlayers = await this.prisma.rooms.findFirst({
+      const roomPlayers = await this.prisma.rooms.findUnique({
         where: { name: roomName },
         select: { players: true },
       });

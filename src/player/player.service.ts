@@ -57,6 +57,7 @@ export class PlayerService {
       rankedPlayers,
       parseInt(this.config.get('REDIS_STORE_TIME')),
     );
+
     return rankedPlayers;
   }
 

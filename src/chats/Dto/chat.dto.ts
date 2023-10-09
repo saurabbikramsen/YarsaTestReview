@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import { IsString } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class ChatDto {
   @ApiProperty({ description: 'Id of the receiver' })
@@ -84,8 +84,10 @@ export class AllRoomResponse {
   @IsString()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    isArray: true,
+  })
   @Type(() => PlayerNameId)
-  player: PlayerNameId[];
+  player: PlayerNameId;
 }
 export class ConnectionDto {}

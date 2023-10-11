@@ -287,3 +287,5 @@
     "senderId": "string id of the sender"
 }
 ```
+
+### Hope this documentation was helpful 

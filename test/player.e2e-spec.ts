@@ -28,8 +28,6 @@ describe('PlayerController E2E test (e2e)', () => {
       .send(newPlayer)
       .expect(201);
 
-    playerId = response.body.id;
-    accessToken = response.body.accessToken;
     expect(response.body).toBeDefined();
   });
   it('should login the player', async () => {
@@ -38,6 +36,8 @@ describe('PlayerController E2E test (e2e)', () => {
       .send({ email: newPlayer.email, password: newPlayer.password })
       .expect(201);
 
+    playerId = response.body.id;
+    accessToken = response.body.accessToken;
     expect(response.body).toBeDefined();
   });
   it('should get a player', async () => {

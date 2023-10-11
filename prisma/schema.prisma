@@ -31,7 +31,7 @@ model Player {
   role     String  @default("player")
   active   Boolean @default(true)
 
-  statistics  Statistics @relation(fields: [stats_id], references: [id])
+  statistics  Statistics @relation(fields: [stats_id], references: [id], onDelete: Cascade)
   stats_id    String     @unique
   refresh_key String?
   Rooms       Rooms[]

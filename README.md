@@ -108,6 +108,7 @@
     - prisma studio will be running in: http://localhost:5555
 
 - For socket APIs documentation 'http://localhost:[port]/async-api' is the provided route.
+- or the socket API documentation is in bottom of this readme.md
 - For socket client reference there is 3 clients present in the clients folder.
 - Use socket documentation for chat system implementation.
 - Now you can call these api's from the frontend when ever you want.
@@ -172,3 +173,117 @@
   $ pnpm run test:e2e
 ```
 
+
+## async-api Documentation
+
+## YarsaPlay Chat Api 1.0
+
+## Channals
+
+
+### SUB  "connect"
+
+- it is used to connect to the server using socket
+
+### Accepts following:
+
+#### Headers
+ ```json
+{
+    "authorization": "your bearer access token" 
+}
+```
+
+
+### PUB  "privateMessage"
+
+- it uses recipient id to send message to other connected users
+
+### Accepts following:
+#### Payload
+ ```json
+{
+    "recipientId": "string id of the receiver",
+    "message": "string message to be delivered"
+}
+```
+### Emits following:
+```json
+{
+    "message": "string message that was sent",
+    "senderId": "string id of the sender"
+}
+```
+
+### SUB  "join_room"
+
+- it joins a user to a room using the room name
+### Accepts following:
+#### Payload
+ ```json
+{
+    "roomName": "string"
+}
+```
+### Returns following:
+```json
+{
+    "message": "string"
+}
+```
+
+### PUB  "message_room"
+
+- provide room name and message to broadcast the message to all the users in the room
+
+### Accepts following:
+#### Payload
+ ```json
+{
+    "roomName": "string",
+    "message": "string message to be broadcasted"
+}
+```
+### Emits following:
+```json
+{
+    "message": "string message that was sent",
+    "senderId": "string id of the sender",
+    "roomName": "string"
+}
+```
+
+### SUB  "leave_room"
+
+- leave a room by providing room name.
+### Accepts following:
+#### Payload
+ ```json
+{
+    "roomName": "string"
+}
+```
+### Returns following:
+```json
+{
+    "message": "string"
+}
+```
+
+### PUB  "message_all"
+
+- used to broadcast message to all the subscribed users
+### Accepts following:
+#### Payload
+ ```json
+{
+    "message": "string message to be delivered"
+}
+```
+### Emits following:
+```json
+{
+    "message": "string message that was sent",
+    "senderId": "string id of the sender"
+}
+```

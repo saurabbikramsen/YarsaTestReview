@@ -96,7 +96,7 @@ export class ChatsGateway {
     const recipientSocket: string = await this.cacheManager.get(recipientId);
     this.server
       .to([recipientSocket, client.id])
-      .emit('privateMessage', { message: message, sender: sender.id });
+      .emit('privateMessage', { message: message, senderId: sender.id });
 
     await this.prisma.chats.create({
       data: {
@@ -141,7 +141,7 @@ export class ChatsGateway {
     description:
       'provide room name and message to broadcast the message to all the users in the room ' +
       'emittedResponse = {' +
-      'message : string, sender_id : string, receiver_id: string' +
+      'message : string, senderId : string, roomName: string' +
       '}',
     message: {
       payload: MessageRoomDto,
@@ -172,7 +172,7 @@ export class ChatsGateway {
     }
     this.server
       .to(roomName)
-      .emit('message_room', { message, sender: sender.id, roomName });
+      .emit('message_room', { message, senderId: sender.id, roomName });
   }
 
   @SubscribeMessage('leave_room')

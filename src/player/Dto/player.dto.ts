@@ -24,6 +24,7 @@ export class PlayerDto {
     enum: ['np', 'in', 'us', 'au', 'af'],
   })
   @IsEnum(Country)
+  @IsOptional()
   country: Country;
 
   @ApiProperty()

@@ -10,7 +10,7 @@ import { CommonModule } from './utils/common.module';
 import { PlayerModule } from './player/player.module';
 import { SseModule } from './serverSentEvents/sse.module';
 import { ChatsModule } from './chats/chats.module';
-import {AppController} from "./app.controller";
+import { AppController } from './app.controller';
 
 @Global()
 @Module({
@@ -32,7 +32,7 @@ import {AppController} from "./app.controller";
     CommonModule,
     PlayerModule,
     SseModule,
-    ChatsModule
+    ChatsModule,
   ],
   controllers: [AppController],
   exports: [JwtModule],

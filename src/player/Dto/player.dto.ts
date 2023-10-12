@@ -47,6 +47,7 @@ export class PlayerUpdateDto {
   email: string;
 
   @ApiProperty({ enum: ['np', 'in', 'us', 'au', 'af'] })
+  @IsOptional()
   @IsEnum(Country)
   country: Country;
 }

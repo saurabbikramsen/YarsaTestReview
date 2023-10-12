@@ -165,7 +165,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiResponse({ type: UserResponseDto })
   @ApiOperation({
-    summary: 'Set the player to inactive state',
+    summary: 'Set the player to inactive state or vice versa',
     description: '**Can be accessed by Admin only**',
   })
   @Patch('/player/setInactive/:id')

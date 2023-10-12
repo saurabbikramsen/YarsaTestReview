@@ -21,22 +21,22 @@ export class AdminAuthGuard implements CanActivate {
         const token_data = this.jwtService.verify(token, {
           secret: this.config.get('ACCESS_TOKEN_SECRET'),
         });
-
         if (token_data.role == 'admin') {
           return true;
         } else {
-          new UnauthorizedException(
+          throw new UnauthorizedException(
             'you are not eligible to perform this task',
           );
         }
       } else {
-        new NotFoundException('no token found');
+        throw new NotFoundException('no token found');
       }
       return false;
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         throw new UnauthorizedException('Token is expired');
       }
+      console.log(error);
       throw error;
     }
   }

@@ -25,12 +25,12 @@ export class StaffAuthGuard implements CanActivate {
         if (token_data.role == 'staff' || token_data.role == 'admin') {
           return true;
         } else {
-          new UnauthorizedException(
+          throw new UnauthorizedException(
             'you are not eligible to perform this task',
           );
         }
       } else {
-        new NotFoundException('no token found');
+        throw new NotFoundException('no token found');
       }
       return false;
     } catch (error) {

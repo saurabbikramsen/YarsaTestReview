@@ -43,10 +43,12 @@
   $ docker compose up -d
 ```
 
-- In the env file
+- In that new .env file
     - Set your 'ACCESS_TOKEN_SECRET' AND 'REFRESH_TOKEN_SECRET'
     - Provide expiry time (in minutes or hour or day) for access and refresh token
       - its value must be in format : 1m or 1h or 1d
+      - refresh expiry time should be higher than access expiry.
+      - suggestion: 1h for acces and 2h for refresh expiry time.
     - Set an appropriate port number for nest-app in PORT variable
 
 
@@ -73,11 +75,13 @@
 
 - After running locally 'http://localhost:[port]/api' is the route for swagger documentation.
   - Here you can see all the api endpoints present.
+
+- Add new terminal tab
 - Run tests to see that every thing is working properly.
   - Run unit tests using following command to see if all the functionalities are working properly.
 ```bash
   # run unit tests
-  $ pnpm run test
+  $ pnpm test
 ```
 
   - Run e2e test which will seed(create) the first admin user:
@@ -87,11 +91,11 @@
 
 ```bash
   # run e2e tests
-  $ pnpm run test:e2e
+  $ pnpm test:e2e
 ```
 
 - Create players and play games to increase their stats.
-- Seed 100 players using command below.
+- Seed(create) 100 players using command below.
 
 ```bash
   #seed 100 players

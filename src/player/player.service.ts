@@ -184,6 +184,14 @@ export class PlayerService {
 
     if (player) return this.utils.loginSignup(player, playerDetails.password);
 
+    const errors = [];
+
+    if (!playerDetails.name) errors.push('name should not be empty');
+
+    if (!playerDetails.country) errors.push('country should not be empty');
+
+    if (errors.length) throw new BadRequestException(errors);
+
     const passwordHash = await argon.hash(playerDetails.password);
     const newPlayer = await this.prisma.player.create({
       data: {

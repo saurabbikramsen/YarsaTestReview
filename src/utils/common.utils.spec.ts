@@ -191,7 +191,7 @@ describe('CommonUtils', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(HttpException);
         expect(error.getStatus()).toBe(HttpStatus.UNAUTHORIZED);
-        expect(error.message).toStrictEqual("password or email doesn't match");
+        expect(error.message).toStrictEqual("password doesn't match");
       }
       expect(userSpyOn).toBeCalledTimes(1);
     });

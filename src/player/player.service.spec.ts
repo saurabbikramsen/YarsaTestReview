@@ -31,6 +31,7 @@ const PrismaServiceMock = {
   },
   statistics: {
     update: jest.fn().mockResolvedValue(statistics),
+    create: jest.fn(),
     findFirst: jest.fn().mockResolvedValue(statistics),
   },
 };
@@ -209,6 +210,7 @@ describe('PlayerService', () => {
         .mockResolvedValueOnce(null);
       argon.hash = jest.fn().mockReturnValue(hashPassword);
       const createSpyOn = jest.spyOn(prismaService.player, 'create');
+      const createStatsSpyOn = jest.spyOn(prismaService.statistics, 'create');
       const logSignupSpyOn = jest.spyOn(utils, 'loginSignup');
       const signup = await playerService.loginSignup(signupDetails);
 
@@ -216,6 +218,7 @@ describe('PlayerService', () => {
       expect(findSpyOn).toBeCalledTimes(7);
       expect(logSignupSpyOn).toBeCalledTimes(1);
       expect(createSpyOn).toBeCalledTimes(1);
+      expect(createStatsSpyOn).toBeCalledTimes(1);
     });
 
     it('should login a player', async () => {

@@ -23,8 +23,6 @@ async function main() {
   dotenv.config();
   console.log('Seeding...');
   for (let i = 0; i < fakerRounds; i++) {
-    const stats = await prisma.statistics.create({ data: fakeStats() });
-
     const data = fakerUser();
     const userData = {
       ...data,
@@ -32,8 +30,10 @@ async function main() {
       country: country[Math.floor(Math.random() * country.length)],
       active: Boolean(Math.round(Math.random())),
     };
-    await prisma.player.create({
-      data: { ...userData, statistics: { connect: { id: stats.id } } },
+    const player = await prisma.player.create({ data: { ...userData } });
+
+    await prisma.statistics.create({
+      data: { ...fakeStats(), player: { connect: { id: player.id } } },
     });
   }
 }

@@ -31,10 +31,9 @@ model Player {
   role     String  @default("player")
   active   Boolean @default(true)
 
-  statistics  Statistics @relation(fields: [stats_id], references: [id], onDelete: Cascade)
-  stats_id    String     @unique
   refresh_key String?
   Rooms       Rooms[]
+  statistics  Statistics?
 }
 
 model Statistics {
@@ -43,10 +42,11 @@ model Statistics {
   updated_at DateTime @updatedAt
 
   experience_point Int
-  coins            Int     @default(0)
+  coins            Int    @default(0)
   games_played     Int
   games_won        Int
-  Player           Player?
+  player_id        String @unique
+  player           Player @relation(references: [id], fields: [player_id], onDelete: Cascade)
 }
 
 model Chats {

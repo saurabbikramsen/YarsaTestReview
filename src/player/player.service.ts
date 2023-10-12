@@ -199,14 +199,15 @@ export class PlayerService {
         email: playerDetails.email,
         password: passwordHash,
         country: playerDetails.country,
-        statistics: {
-          create: {
-            experience_point: 0,
-            games_played: 0,
-            games_won: 0,
-            coins: 0,
-          },
-        },
+      },
+    });
+    await this.prisma.statistics.create({
+      data: {
+        experience_point: 0,
+        games_played: 0,
+        games_won: 0,
+        coins: 0,
+        player_id: newPlayer.id,
       },
     });
     return await this.utils.loginSignup(newPlayer, playerDetails.password);
@@ -241,7 +242,7 @@ export class PlayerService {
     });
 
     const playerData = await this.prisma.statistics.update({
-      where: { id: player.stats_id },
+      where: { id: player.statistics.id },
       data: {
         experience_point: game_won
           ? xp + points

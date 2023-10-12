@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class ChatDto {
@@ -48,6 +48,8 @@ export class PersonalChatsResponseDto {
 
 export class ChatsDto {
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   message: string;
 }
 export class RoomChatsResponseDto {

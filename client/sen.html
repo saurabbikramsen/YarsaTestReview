@@ -70,7 +70,7 @@
       const socket = io('http://localhost:8080', {
         extraHeaders: {
           authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM2YzczNzcyLTA1NjYtNDg1NC05MzM0LTI3ZjRkMTUyZWM3ZSIsInJvbGUiOiJwbGF5ZXIiLCJpYXQiOjE2OTY1MTg5MjQsImV4cCI6MTY5NjUyMjUyNH0.x0OeAl2VZGuLZ-L5aPvMm-mQEKJ5ZJAlujEKs416pLw'
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjZjNDQyLTZiMDgtNDYwYS1iMGEzLThjNDQ0YTAyNGIxMSIsInJvbGUiOiJwbGF5ZXIiLCJpYXQiOjE2OTcwOTk2NzAsImV4cCI6MTY5NzE4NjA3MH0.zsSu3ny3ZmdT7-sS9ZtNFyOKSPKUAZfkNsDHkS_Ge_k'
         }
       });
 
@@ -100,7 +100,7 @@
           if (message) {
             socket.emit('privateMessage', {
               message: message,
-              recipientId: '28469f53-ff08-4637-ab5f-2df8ba99b699',
+              recipientId: '674f6328-b660-4d73-b029-bab43dce4acd',
             });
             messageInput.value = '';
           }

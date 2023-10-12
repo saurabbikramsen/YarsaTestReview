@@ -80,6 +80,7 @@ export class ChatsGateway {
     description:
       'it uses recipient id to send message to other connected users and returns senders id and message ' +
       'emittedResponse = {' +
+      'id: string, ' +
       'message: string,  ' +
       'senderId: string' +
       '}',
@@ -94,17 +95,18 @@ export class ChatsGateway {
     const { recipientId, message } = data;
     const sender = client.data.user;
     const recipientSocket: string = await this.cacheManager.get(recipientId);
-    this.server
-      .to([recipientSocket, client.id])
-      .emit('privateMessage', { message: message, senderId: sender.id });
 
-    await this.prisma.chats.create({
+    const chat = await this.prisma.chats.create({
       data: {
         sender_id: sender.id,
         receiver_id: recipientId,
         message: message,
       },
     });
+
+    this.server
+      .to([recipientSocket, client.id])
+      .emit('privateMessage', { id: chat.id, message: message, senderId: sender.id });
   }
 
   @SubscribeMessage('join_room')
@@ -141,7 +143,7 @@ export class ChatsGateway {
     description:
       'provide room name and message to broadcast the message to all the users in the room ' +
       'emittedResponse = {' +
-      'message : string, senderId : string, roomName: string' +
+      'id: string, message : string, senderId : string, roomName: string' +
       '}',
     message: {
       payload: MessageRoomDto,
@@ -167,12 +169,13 @@ export class ChatsGateway {
         where: { id: room.id },
         data: { chats: { connect: { id: chat.id } } },
       });
+
+      this.server
+        .to(roomName)
+        .emit('message_room', { id: chat.id, message, senderId: sender.id, roomName });
     } else {
       throw new NotFoundException('no room available');
     }
-    this.server
-      .to(roomName)
-      .emit('message_room', { message, senderId: sender.id, roomName });
   }
 
   @SubscribeMessage('leave_room')

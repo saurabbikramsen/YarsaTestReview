@@ -187,6 +187,7 @@ export class UserController {
 
   @UseGuards(StaffAuthGuard)
   @ApiBearerAuth()
+  @ApiQuery({ name: 'searchKey', required: false, type: String })
   @ApiQuery({ name: 'page', required: true, type: Number })
   @ApiQuery({ name: 'pageSize', required: true, type: Number })
   @ApiQuery({ name: 'country', required: false, type: String })

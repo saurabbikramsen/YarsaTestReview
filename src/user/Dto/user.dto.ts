@@ -12,6 +12,7 @@ import { UserRole } from '../../enums/enums';
 export class UserDto {
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty()
@@ -27,6 +28,7 @@ export class UserDto {
 
   @ApiProperty({ enum: ['admin', 'staff'] })
   @IsEnum(UserRole)
+  @IsNotEmpty()
   role: UserRole;
 }
 
@@ -39,7 +41,6 @@ export class UserUpdateDto {
   @ApiProperty()
   @IsOptional()
   @IsEmail()
-  @IsNotEmpty()
   email: string;
 
   @ApiProperty({ enum: ['admin', 'user'] })

@@ -7,10 +7,15 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class AdminAuthGuard implements CanActivate {
-  constructor(private config: ConfigService, private jwtService: JwtService) {}
+  constructor(
+    private config: ConfigService,
+    private jwtService: JwtService,
+    private prisma: PrismaService,
+  ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const request = context.switchToHttp().getRequest();
@@ -21,6 +26,11 @@ export class AdminAuthGuard implements CanActivate {
         const token_data = this.jwtService.verify(token, {
           secret: this.config.get('ACCESS_TOKEN_SECRET'),
         });
+        const user = await this.prisma.user.findUnique({
+          where: { id: token_data.id },
+        });
+        if (!user) throw new NotFoundException('Unable to perform the task');
+
         if (token_data.role == 'admin') {
           return true;
         } else {

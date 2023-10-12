@@ -186,7 +186,7 @@ export class CommonUtils {
     const pwMatches = await argon.verify(userPassword, inputPassword);
     if (!pwMatches) {
       throw new HttpException(
-        "password or email doesn't match",
+        "password doesn't match",
         HttpStatus.UNAUTHORIZED,
       );
     }

@@ -38,7 +38,7 @@ export class UserService {
     const count = await this.prisma.user.count({
       where: { name: { contains: searchKey, mode: 'insensitive' } },
     });
-    return this.utils.paginatedResponse(users, skip, take, count);
+    return this.utils.paginatedResponse('user', users, skip, take, count);
   }
 
   async loginUser(loginDetails: UserLoginDto) {

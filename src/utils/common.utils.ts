@@ -76,7 +76,7 @@ export class CommonUtils {
     take: number,
     count: number,
   ) {
-    const hasNextPage = count - skip !== take && count - skip > take;
+    const hasNextPage = count - skip > take;
     const hasPreviousPage = skip >= take;
     const totalPages = Math.ceil(count / take);
     const currentPage = skip / take + 1;

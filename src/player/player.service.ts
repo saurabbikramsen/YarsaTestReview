@@ -119,7 +119,6 @@ export class PlayerService {
     const players = await this.prisma.player.findMany({
       where: {
         name: { contains: search, mode: 'insensitive' },
-        active: true,
         country: { contains: country },
       },
       skip,
@@ -143,10 +142,15 @@ export class PlayerService {
       where: {
         name: { contains: search, mode: 'insensitive' },
         country: { contains: country },
-        active: true,
       },
     });
-    return this.utils.paginatedResponse(players, skip, take, count);
+    return this.utils.paginatedResponse(
+      'user/players/all',
+      players,
+      skip,
+      take,
+      count,
+    );
   }
 
   async setInactive(id: string) {

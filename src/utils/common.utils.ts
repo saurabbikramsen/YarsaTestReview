@@ -69,25 +69,37 @@ export class CommonUtils {
     return randomString;
   }
 
-  paginatedResponse(data: any, skip: number, take: number, count: number) {
+  paginatedResponse(
+    endpoint: string,
+    data: any,
+    skip: number,
+    take: number,
+    count: number,
+  ) {
+    const hasNextPage = count - skip > take;
+    const hasPreviousPage = skip >= take;
+    const totalPages = Math.ceil(count / take);
+    const currentPage = skip / take + 1;
+
     return {
       data: data,
       meta: {
         totalItems: count,
         itemsPerPage: take,
-        currentPage: skip == 0 ? 1 : skip / take + 1,
-        totalPages: Math.ceil(count / take),
-        hasNextPage: count - skip != take && count > take,
-        hasPreviousPage: skip >= take,
+        currentPage,
+        totalPages,
+        hasNextPage,
+        hasPreviousPage,
       },
       links: {
-        first: `/player?page=1&pageSize=${take}`,
-        prev: skip == 0 ? null : `/vendor?page=${skip / take}&pageSize=${take}`,
-        next:
-          count - skip != take && count > take
-            ? `/player?page=${skip / take + 2}&pageSize=${take}`
-            : null,
-        last: `/player?page=${Math.ceil(count / take)}&pageSize=${take}`,
+        first: `/${endpoint}?page=1&pageSize=${take}`,
+        prev: hasPreviousPage
+          ? `/${endpoint}?page=${currentPage - 1}&pageSize=${take}`
+          : null,
+        next: hasNextPage
+          ? `/${endpoint}?page=${currentPage + 1}&pageSize=${take}`
+          : null,
+        last: `/${endpoint}?page=${totalPages}&pageSize=${take}`,
       },
     };
   }

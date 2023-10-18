@@ -86,7 +86,7 @@ describe('CommonUtils', () => {
   });
   describe('should return paginated response', () => {
     it('should return paginated user or player data', async () => {
-      const paginatedData = commonUtils.paginatedResponse(playerData, 0, 2, 7);
+      const paginatedData = commonUtils.paginatedResponse('player', playerData, 0, 2, 7);
       expect(paginatedData).toStrictEqual(paginatedPlayer);
     });
   });
